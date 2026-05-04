@@ -2,11 +2,12 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#0a0a1a">
-    <title>🎮 مركز الألعاب المتكامل - Ultimate Game Hub</title>
+    <meta name="description" content="مركز الألعاب - أكثر من 16 لعبة رائعة في مكان واحد">
+    <title>🎮 مركز الألعاب | General Fix Team</title>
     <style>
         :root {
             --primary: #6c5ce7;
@@ -25,6 +26,21 @@
             --glow-gold: 0 0 30px rgba(253, 203, 110, 0.6);
             --glow-cyan: 0 0 30px rgba(0, 210, 211, 0.6);
         }
+
+        body.light-theme {
+            --dark: #f0f4f8;
+            --darker: #e2e8f0;
+            --card: rgba(0, 0, 0, 0.03);
+            --glass: rgba(0, 0, 0, 0.05);
+            --border: rgba(0, 0, 0, 0.12);
+            color: #1a1a2e;
+        }
+        body.light-theme .game-container { background: rgba(255, 255, 255, 0.85) !important; }
+        body.light-theme .game-nav-btn { color: #333 !important; }
+        body.light-theme .top-bar { background: rgba(255, 255, 255, 0.85) !important; }
+        body.light-theme .sidebar { background: rgba(255, 255, 255, 0.97) !important; }
+        body.light-theme .sidebar a, body.light-theme .sidebar-item { color: #333 !important; }
+        body.light-theme .mole-hole { background: #ddd !important; }
 
         * {
             margin: 0;
@@ -47,9 +63,9 @@
                 radial-gradient(ellipse at 85% 75%, rgba(253, 121, 168, 0.1) 0%, transparent 50%),
                 radial-gradient(ellipse at 50% 50%, rgba(253, 203, 110, 0.05) 0%, transparent 70%),
                 radial-gradient(ellipse at 30% 60%, rgba(0, 210, 211, 0.08) 0%, transparent 40%);
+            transition: background 0.4s, color 0.4s;
         }
 
-        /* خلفية النجوم */
         .stars-container {
             position: fixed;
             top: 0;
@@ -71,7 +87,6 @@
             50% { opacity: 1; transform: scale(1.5); }
         }
 
-        /* جسيمات */
         .particles-layer {
             position: fixed;
             top: 0;
@@ -93,7 +108,127 @@
             100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
         }
 
-        /* الشريط العلوي */
+        /* ========== السايدبار ========== */
+        .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 400;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+        }
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -320px;
+            width: 290px;
+            height: 100vh;
+            height: 100dvh;
+            background: rgba(10, 10, 26, 0.97);
+            backdrop-filter: blur(35px);
+            -webkit-backdrop-filter: blur(35px);
+            border-left: 1px solid var(--border);
+            z-index: 500;
+            padding: 80px 15px 130px 15px;
+            transition: right 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch;
+            box-shadow: -15px 0 60px rgba(0,0,0,0.3);
+        }
+        .sidebar.open {
+            right: 0;
+        }
+        .sidebar-title {
+            color: var(--gold);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 16px 0 8px;
+            padding-right: 12px;
+        }
+        .sidebar-title:first-child {
+            margin-top: 0;
+        }
+        .sidebar a, .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 15px;
+            border-radius: 16px;
+            text-decoration: none;
+            color: #ccc;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1.5px solid transparent;
+            background: transparent;
+            transition: all 0.3s;
+            margin-bottom: 4px;
+            flex-shrink: 0;
+        }
+        .sidebar a:hover, .sidebar-item:hover {
+            background: rgba(108,92,231,0.15);
+            border-color: rgba(108,92,231,0.3);
+            color: #fff;
+            transform: translateX(-5px);
+        }
+        .sidebar a .sicon, .sidebar-item .sicon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .theme-row {
+            display: flex;
+            gap: 8px;
+            padding: 5px 15px;
+        }
+        .theme-dot {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+        .theme-dot:hover {
+            transform: scale(1.1);
+        }
+        .theme-dot.active {
+            border-color: var(--gold);
+            box-shadow: 0 0 15px rgba(253,203,110,0.4);
+        }
+        .theme-dot.dark {
+            background: #1a1a2e;
+            color: #fff;
+        }
+        .theme-dot.light {
+            background: #fff;
+            color: #333;
+        }
+        .sidebar-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+            margin: 12px 10px;
+        }
+
+        /* ========== الشريط العلوي ========== */
         .top-bar {
             background: rgba(10, 10, 26, 0.8);
             backdrop-filter: blur(30px);
@@ -117,6 +252,7 @@
             background-size: 300% 300%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
             animation: gradientShift 5s ease infinite;
             letter-spacing: -1px;
         }
@@ -148,8 +284,35 @@
             transform: scale(1.08);
             box-shadow: 0 0 60px rgba(231, 76, 60, 1);
         }
+        .menu-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            z-index: 10;
+        }
+        .menu-btn span {
+            display: block;
+            width: 22px;
+            height: 2.5px;
+            border-radius: 3px;
+            background: #fff;
+            transition: 0.3s;
+        }
+        .menu-btn:hover {
+            background: rgba(108,92,231,0.2);
+            border-color: var(--primary);
+        }
 
-        /* المحتوى */
+        /* ========== المحتوى ========== */
         .content {
             position: relative;
             z-index: 1;
@@ -164,6 +327,7 @@
             background: linear-gradient(to right, #ff6b6b, #feca57, #48dbfb, #a29bfe, #ff9ff3);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
             font-weight: 900;
             line-height: 1.3;
         }
@@ -173,7 +337,6 @@
             margin-top: 4px;
         }
 
-        /* فئات الألعاب */
         .category-title {
             text-align: center;
             color: var(--gold);
@@ -184,7 +347,6 @@
             letter-spacing: 1px;
         }
 
-        /* أزرار التنقل */
         .games-nav {
             display: flex;
             flex-wrap: wrap;
@@ -207,6 +369,7 @@
             position: relative;
             overflow: hidden;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             white-space: nowrap;
             display: inline-flex;
             align-items: center;
@@ -237,7 +400,7 @@
             font-size: 1.2em;
         }
 
-        /* حاوية اللعبة */
+        /* ========== حاوية اللعبة ========== */
         .game-wrapper {
             max-width: 620px;
             margin: 12px auto;
@@ -265,6 +428,7 @@
             background: linear-gradient(135deg, #feca57, #ff9ff3);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
             font-weight: 800;
         }
 
@@ -298,8 +462,12 @@
             letter-spacing: 0.5px;
             position: relative;
             overflow: hidden;
+            font-family: inherit;
+            color: white;
         }
-        .btn:active { transform: scale(0.93); }
+        .btn:active {
+            transform: scale(0.93);
+        }
         .btn-glow {
             background: linear-gradient(135deg, #6c5ce7, #a29bfe);
             color: white;
@@ -307,8 +475,8 @@
             animation: glowPulse 2.2s infinite;
         }
         @keyframes glowPulse {
-            0%,100% { box-shadow: 0 0 22px rgba(108,92,231,0.5); }
-            50% { box-shadow: 0 0 45px rgba(108,92,231,0.9), 0 0 90px rgba(162,155,254,0.4); }
+            0%, 100% { box-shadow: 0 0 22px rgba(108, 92, 231, 0.5); }
+            50% { box-shadow: 0 0 45px rgba(108, 92, 231, 0.9), 0 0 90px rgba(162, 155, 254, 0.4); }
         }
         .btn-success {
             background: linear-gradient(135deg, #00b894, #55efc4);
@@ -327,10 +495,16 @@
             color: #ddd;
             backdrop-filter: blur(5px);
         }
-        .btn-sm { padding: 8px 16px; font-size: 0.75em; }
-        .btn-xs { padding: 6px 12px; font-size: 0.7em; }
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.75em;
+        }
+        .btn-xs {
+            padding: 6px 12px;
+            font-size: 0.7em;
+        }
 
-        /* نافذة الفوز الفاخرة */
+        /* ========== نافذة الفوز ========== */
         .win-overlay {
             display: none;
             position: fixed;
@@ -341,8 +515,13 @@
             align-items: center;
             animation: fadeIn 0.2s;
         }
-        .win-overlay.show { display: flex; }
-        @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+        .win-overlay.show {
+            display: flex;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
         .win-dialog {
             background: linear-gradient(160deg, #1a1a35, #0d0d22);
             border-radius: 35px;
@@ -358,16 +537,39 @@
             0% { transform: scale(0.5) translateY(50px); opacity: 0; }
             100% { transform: scale(1) translateY(0); opacity: 1; }
         }
-        .win-icon { font-size: 4.5em; animation: bounceWin 0.7s infinite alternate; }
-        @keyframes bounceWin { from{transform:translateY(0)} to{transform:translateY(-20px)} }
-        .win-title { font-size: 2em; color: var(--gold); margin: 10px 0; font-weight: 900; }
-        .win-stars { font-size: 2.5em; margin: 8px 0; }
-        .win-score { font-size: 1.1em; color: #ccc; margin: 8px 0; line-height: 1.5; }
+        .win-icon {
+            font-size: 4.5em;
+            animation: bounceWin 0.7s infinite alternate;
+        }
+        @keyframes bounceWin {
+            from { transform: translateY(0); }
+            to { transform: translateY(-20px); }
+        }
+        .win-title {
+            font-size: 2em;
+            color: var(--gold);
+            margin: 10px 0;
+            font-weight: 900;
+        }
+        .win-stars {
+            font-size: 2.5em;
+            margin: 8px 0;
+        }
+        .win-score {
+            font-size: 1.1em;
+            color: #ccc;
+            margin: 8px 0;
+            line-height: 1.5;
+        }
         .win-dialog .btn {
             margin-top: 12px;
         }
 
-        /* Canvas عام */
+        .hidden {
+            display: none !important;
+        }
+
+        /* ========== Canvas وألواح اللعب ========== */
         canvas {
             border-radius: 18px;
             max-width: 100%;
@@ -375,9 +577,9 @@
             box-shadow: 0 0 40px rgba(108,92,231,0.2);
             display: block;
             margin: 10px auto;
+            touch-action: none;
         }
 
-        /* XO */
         .xo-board {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -398,11 +600,20 @@
             font-weight: bold;
             transition: 0.2s;
         }
-        .xo-cell:active { transform: scale(0.88); }
-        .xo-cell.x { color: #ff6b6b; text-shadow: 0 0 20px #ff6b6b; border-color: #ff6b6b; }
-        .xo-cell.o { color: #48dbfb; text-shadow: 0 0 20px #48dbfb; border-color: #48dbfb; }
+        .xo-cell:active {
+            transform: scale(0.88);
+        }
+        .xo-cell.x {
+            color: #ff6b6b;
+            text-shadow: 0 0 20px #ff6b6b;
+            border-color: #ff6b6b;
+        }
+        .xo-cell.o {
+            color: #48dbfb;
+            text-shadow: 0 0 20px #48dbfb;
+            border-color: #48dbfb;
+        }
 
-        /* Memory */
         .memory-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -421,15 +632,19 @@
             font-size: 2.2em;
             transition: 0.4s;
         }
-        .memory-card.flipped { background: #fff; transform: rotateY(180deg); }
+        .memory-card.flipped {
+            background: #fff;
+            transform: rotateY(180deg);
+        }
         .memory-card.matched {
             background: linear-gradient(135deg, #00b894, #55efc4);
             pointer-events: none;
             animation: matchPop 0.45s;
         }
-        @keyframes matchPop { 50%{transform:scale(1.18)} }
+        @keyframes matchPop {
+            50% { transform: scale(1.18); }
+        }
 
-        /* Guess */
         .guess-input {
             padding: 13px;
             font-size: 1.2em;
@@ -442,9 +657,11 @@
             outline: none;
             transition: 0.3s;
         }
-        .guess-input:focus { border-color: var(--gold); box-shadow: 0 0 35px rgba(253,203,110,0.4); }
+        .guess-input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 35px rgba(253,203,110,0.4);
+        }
 
-        /* Typing */
         .typing-area {
             background: var(--card);
             padding: 16px;
@@ -457,9 +674,6 @@
             text-align: left;
             direction: ltr;
         }
-        .typing-word { padding: 3px 7px; border-radius: 6px; display: inline-block; margin: 1px; }
-        .typing-word.current { background: rgba(253,203,110,0.4); }
-        .typing-word.correct { color: #55efc4; }
         .typing-input {
             width: 90%;
             max-width: 340px;
@@ -476,7 +690,6 @@
             display: block;
         }
 
-        /* Puzzle */
         .puzzle-grid {
             display: grid;
             gap: 4px;
@@ -496,8 +709,14 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             font-size: 1.2em;
         }
-        .puzzle-tile:active { transform: scale(0.9); }
-        .puzzle-tile.empty { background: var(--card); cursor: default; box-shadow: none; }
+        .puzzle-tile:active {
+            transform: scale(0.9);
+        }
+        .puzzle-tile.empty {
+            background: var(--card);
+            cursor: default;
+            box-shadow: none;
+        }
 
         .difficulty-selector {
             display: flex;
@@ -524,7 +743,6 @@
             box-shadow: 0 0 18px rgba(108,92,231,0.6);
         }
 
-        /* Whack-a-mole */
         .mole-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -556,9 +774,10 @@
             0% { transform: scale(0.3); }
             100% { transform: scale(1); }
         }
-        .mole-hole:active { transform: scale(0.9); }
+        .mole-hole:active {
+            transform: scale(0.9);
+        }
 
-        /* 2048 */
         .grid-2048 {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -592,7 +811,6 @@
         .tile-2048[data-value="1024"] { background: #edc53f; color: #f9f6f2; font-size: 0.9em; }
         .tile-2048[data-value="2048"] { background: #edc22e; color: #f9f6f2; font-size: 0.8em; box-shadow: 0 0 30px rgba(237,194,46,0.6); }
 
-        /* لعبة السرعة */
         .reaction-area {
             width: 100%;
             max-width: 300px;
@@ -611,12 +829,21 @@
         .reaction-ready { background: #feca57; }
         .reaction-go { background: #00b894; }
 
-        .hidden { display: none !important; }
+        .view-counter {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.05);
+            padding: 8px 16px;
+            border-radius: 20px;
+            margin: 10px 0;
+            font-size: 0.8em;
+        }
 
-        /* Responsive */
         @media (max-width: 400px) {
             .game-nav-btn { padding: 7px 11px; font-size: 0.72em; }
             .game-container { padding: 16px 8px; border-radius: 22px; }
+            .sidebar { width: 270px; right: -290px; }
             .xo-board { max-width: 240px; }
             .memory-grid { max-width: 290px; gap: 5px; }
             .mole-grid { max-width: 260px; }
@@ -631,28 +858,65 @@
 </head>
 <body>
 
-    <!-- نجوم -->
     <div class="stars-container" id="starsContainer"></div>
-
-    <!-- جسيمات -->
     <div class="particles-layer" id="particlesLayer"></div>
 
-    <!-- الشريط العلوي -->
+    <!-- ========== السايدبار ========== -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-title">🎮 الألعاب</div>
+        <div class="sidebar-item" onclick="showGame('snake');closeSidebar()"><span class="sicon">🐍</span> الثعبان</div>
+        <div class="sidebar-item" onclick="showGame('xo');closeSidebar()"><span class="sicon">❌</span> X O</div>
+        <div class="sidebar-item" onclick="showGame('memory');closeSidebar()"><span class="sicon">🧠</span> الذاكرة</div>
+        <div class="sidebar-item" onclick="showGame('2048');closeSidebar()"><span class="sicon">🔢</span> 2048</div>
+        <div class="sidebar-item" onclick="showGame('flappy');closeSidebar()"><span class="sicon">🐦</span> فلابي</div>
+        <div class="sidebar-item" onclick="showGame('mole');closeSidebar()"><span class="sicon">🔨</span> اضرب الخلد</div>
+        <div class="sidebar-item" onclick="showGame('rps');closeSidebar()"><span class="sicon">✂️</span> حجر ورقة مقص</div>
+
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-title">🎨 المظهر</div>
+        <div class="theme-row">
+            <div class="theme-dot dark active" onclick="setTheme('dark')">🌙</div>
+            <div class="theme-dot light" onclick="setTheme('light')">☀️</div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-title">🌐 مواقعنا الأخرى</div>
+        <a href="https://ahmdhlaq031-design.github.io/Smart-Free-tools-/" target="_blank"><span class="sicon">🛠️</span> الأدوات الذكية</a>
+        <a href="https://ahmdhlaq031-design.github.io/Ev_Genaral_zero/" target="_blank"><span class="sicon">⚔️</span> لعبة جنرال</a>
+        <a href="https://ahmdhlaq031-design.github.io/Seel/" target="_blank"><span class="sicon">🛒</span> المتجر</a>
+        <a href="https://ahmdhlaq031-design.github.io" target="_blank"><span class="sicon">🏠</span> الرئيسية</a>
+
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-title">ℹ️ عن المركز</div>
+        <div style="padding: 0 12px; font-size: 0.75em; color: #999; line-height: 1.8;">
+            <p>🎮 <strong>مركز الألعاب</strong></p>
+            <p>16+ لعبة رائعة في مكان واحد</p>
+            <p>👨‍💻 <strong>General Fix Team</strong></p>
+            <p>📅 2025 - 2026</p>
+        </div>
+    </div>
+
+    <!-- ========== الشريط العلوي ========== -->
     <div class="top-bar">
-        <div class="logo">🎮 GameHub Ultimate</div>
-        <a href="https://ahmdhlaq031-design.github.io/Ev_Genaral_zero/" 
-           class="btn-special" target="_blank" rel="noopener">
-           ⚔️ لعبة جنرال
-        </a>
+        <div class="logo">🎮 Game Renger</div>
+        <div style="display: flex; gap: 8px; align-items: center;">
+            <a href="https://ahmdhlaq031-design.github.io/Ev_Genaral_zero/" class="btn-special" target="_blank" rel="noopener">⚔️ لعبة جنرال</a>
+            <div class="menu-btn" id="menuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
     </div>
 
     <div class="content">
         <div class="hero">
-            <h1>🏆 مركز الألعاب المتكامل</h1>
-            <p class="subtitle">15 لعبة رائعة • تصميم عصري • تجربة ممتعة</p>
+            <h1>🏆 مركز العاب General Fix Team</h1>
+            <p class="subtitle">16 لعبة رائعة • تصميم عصري • تجربة ممتعة</p>
+            <div class="view-counter">👁️ عدد الزوار: <span id="viewCount" style="color: var(--gold); font-weight: 700;">1,000</span></div>
         </div>
 
-        <!-- ألعاب كلاسيكية -->
         <div class="category-title">🕹️ ألعاب كلاسيكية</div>
         <div class="games-nav">
             <button class="game-nav-btn" onclick="showGame('snake')"><span class="nav-emoji">🐍</span> الثعبان</button>
@@ -662,7 +926,6 @@
             <button class="game-nav-btn" onclick="showGame('typing')"><span class="nav-emoji">⌨️</span> الكتابة</button>
         </div>
 
-        <!-- ألعاب ألغاز -->
         <div class="category-title">🧩 ألغاز وتفكير</div>
         <div class="games-nav">
             <button class="game-nav-btn" onclick="showGame('puzzle')"><span class="nav-emoji">🧩</span> اللغز المنزلق</button>
@@ -671,7 +934,6 @@
             <button class="game-nav-btn" onclick="showGame('sudoku')"><span class="nav-emoji">📝</span> سودوكو</button>
         </div>
 
-        <!-- ألعاب سرعة وحركة -->
         <div class="category-title">⚡ سرعة ورد فعل</div>
         <div class="games-nav">
             <button class="game-nav-btn" onclick="showGame('ball')"><span class="nav-emoji">🏓</span> كسر الطوب</button>
@@ -680,7 +942,6 @@
             <button class="game-nav-btn" onclick="showGame('mole')"><span class="nav-emoji">🔨</span> اضرب الخلد</button>
         </div>
 
-        <!-- ألعاب متنوعة -->
         <div class="category-title">🎲 ألعاب متنوعة</div>
         <div class="games-nav">
             <button class="game-nav-btn" onclick="showGame('dice')"><span class="nav-emoji">🎲</span> النرد</button>
@@ -700,8 +961,6 @@
         </div>
 
         <!-- ==================== الألعاب ==================== -->
-
-        <!-- 1. الثعبان -->
         <div id="snake" class="game-wrapper hidden">
             <div class="game-container">
                 <h2>🐍 الثعبان اللامتناهي</h2>
@@ -712,7 +971,6 @@
             </div>
         </div>
 
-        <!-- 2. XO -->
         <div id="xo" class="game-wrapper hidden">
             <div class="game-container">
                 <h2>❌⭕ لعبة XO</h2>
@@ -722,7 +980,6 @@
             </div>
         </div>
 
-        <!-- 3. الذاكرة -->
         <div id="memory" class="game-wrapper hidden">
             <div class="game-container">
                 <h2>🧠 الذاكرة</h2>
@@ -732,7 +989,6 @@
             </div>
         </div>
 
-        <!-- 4. التخمين -->
         <div id="guess" class="game-wrapper hidden">
             <div class="game-container">
                 <h2>🎯 خمن الرقم</h2>
@@ -747,7 +1003,6 @@
             </div>
         </div>
 
-        <!-- 5. الكتابة -->
         <div id="typing" class="game-wrapper hidden">
             <div class="game-container">
                 <h2>⌨️ تحدي الكتابة</h2>
@@ -758,7 +1013,6 @@
             </div>
         </div>
 
-        <!-- 6. اللغز المنزلق -->
         <div id="puzzle" class="game-wrapper hidden">
             <div class="game-container">
                 <h2>🧩 لغز الأرقام المنزلق</h2>
@@ -774,7 +1028,6 @@
             </div>
         </div>
 
-        <!-- 7. 2048 -->
         <div id="2048" class="game-wrapper hidden">
             <div class="game-container">
                 <h2>🔢 2048</h2>
@@ -785,18 +1038,15 @@
             </div>
         </div>
 
-        <!-- 8. كاسح ألغام -->
         <div id="minesweeper" class="game-wrapper hidden">
             <div class="game-container">
                 <h2>💣 كاسح الألغام</h2>
                 <div class="score-badge">🚩 <span id="minesLeft">10</span> ألغام</div>
                 <div id="minesweeperGrid" style="display:grid;gap:2px;max-width:320px;margin:10px auto;"></div>
                 <button class="btn btn-glow btn-sm" onclick="startMinesweeper()">🔄 جديد</button>
-                <p style="color:#888;font-size:0.7em;">اضغط للكشف • اضغط مطولاً لوضع علم 🚩</p>
             </div>
         </div>
 
-        <!-- 9. سودوكو -->
         <div id="sudoku" class="game-wrapper hidden">
             <div class="game-container">
                 <h2>📝 سودوكو</h2>
@@ -807,7 +1057,6 @@
             </div>
         </div>
 
-        <!-- 10. كسر الطوب -->
         <div id="ball" class="game-wrapper hidden">
             <div class="game-container">
                 <h2>🏓 كسر الطوب</h2>
@@ -818,7 +1067,6 @@
             </div>
         </div>
 
-        <!-- 11. طائر فلابي -->
         <div id="flappy" class="game-wrapper hidden">
             <div class="game-container">
                 <h2>🐦 طائر فلابي</h2>
@@ -829,20 +1077,16 @@
             </div>
         </div>
 
-        <!-- 12. سرعة الرد -->
         <div id="reaction" class="game-wrapper hidden">
             <div class="game-container">
                 <h2>⚡ سرعة الرد</h2>
                 <div class="score-badge">⏱️ <span id="reactionTime">--</span> مللي ثانية</div>
-                <div class="reaction-area reaction-wait" id="reactionArea" onclick="handleReaction()">
-                    اضغط للبدء
-                </div>
+                <div class="reaction-area reaction-wait" id="reactionArea" onclick="handleReaction()">اضغط للبدء</div>
                 <div class="score-badge">🏆 أفضل وقت: <span id="reactionBest">--</span></div>
                 <button class="btn btn-outline btn-sm" onclick="resetReaction()">🔄 إعادة</button>
             </div>
         </div>
 
-        <!-- 13. اضرب الخلد -->
         <div id="mole" class="game-wrapper hidden">
             <div class="game-container">
                 <h2>🔨 اضرب الخلد</h2>
@@ -852,7 +1096,6 @@
             </div>
         </div>
 
-        <!-- 14. النرد -->
         <div id="dice" class="game-wrapper hidden">
             <div class="game-container">
                 <h2>🎲 النرد - الأعلى يفوز</h2>
@@ -867,7 +1110,6 @@
             </div>
         </div>
 
-        <!-- 15. تحطيم الجليد -->
         <div id="ice" class="game-wrapper hidden">
             <div class="game-container">
                 <h2>🧊 تحطيم الجليد</h2>
@@ -878,7 +1120,6 @@
             </div>
         </div>
 
-        <!-- 16. حجر ورقة مقص -->
         <div id="rps" class="game-wrapper hidden">
             <div class="game-container">
                 <h2>✂️ حجر ورقة مقص</h2>
@@ -897,19 +1138,18 @@
                 <button class="btn btn-outline btn-sm" onclick="resetRPS()" style="margin-top:8px;">🔄 تصفير</button>
             </div>
         </div>
-
     </div>
 
     <script>
         // ============ تأثيرات الخلفية ============
         (function createStars() {
-            const container = document.getElementById('starsContainer');
-            for (let i = 0; i < 80; i++) {
-                const star = document.createElement('div');
+            var container = document.getElementById('starsContainer');
+            for (var i = 0; i < 80; i++) {
+                var star = document.createElement('div');
                 star.className = 'star';
                 star.style.left = Math.random() * 100 + '%';
                 star.style.top = Math.random() * 100 + '%';
-                const size = Math.random() * 3 + 1;
+                var size = Math.random() * 3 + 1;
                 star.style.width = size + 'px';
                 star.style.height = size + 'px';
                 star.style.setProperty('--duration', Math.random() * 3 + 2 + 's');
@@ -919,13 +1159,13 @@
         })();
 
         (function createParticles() {
-            const container = document.getElementById('particlesLayer');
-            const colors = ['#6c5ce7', '#a29bfe', '#fd79a8', '#fdcb6e', '#00d2d3', '#55efc4'];
-            for (let i = 0; i < 25; i++) {
-                const p = document.createElement('div');
+            var container = document.getElementById('particlesLayer');
+            var colors = ['#6c5ce7', '#a29bfe', '#fd79a8', '#fdcb6e', '#00d2d3', '#55efc4'];
+            for (var i = 0; i < 25; i++) {
+                var p = document.createElement('div');
                 p.className = 'particle-float';
                 p.style.left = Math.random() * 100 + '%';
-                const size = Math.random() * 5 + 2;
+                var size = Math.random() * 5 + 2;
                 p.style.width = size + 'px';
                 p.style.height = size + 'px';
                 p.style.background = colors[Math.floor(Math.random() * colors.length)];
@@ -935,341 +1175,859 @@
             }
         })();
 
+        // ============ السايدبار ============
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebarOverlay').classList.toggle('active');
+        }
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+        }
+        document.getElementById('menuBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleSidebar();
+        });
+        document.getElementById('sidebarOverlay').addEventListener('click', closeSidebar);
+
+        // ============ الثيم ============
+        function setTheme(t) {
+            if (t === 'light') {
+                document.body.classList.add('light-theme');
+            } else {
+                document.body.classList.remove('light-theme');
+            }
+            document.querySelectorAll('.theme-dot').forEach(function(d) { d.classList.remove('active'); });
+            var dot = document.querySelector('.theme-dot.' + t);
+            if (dot) dot.classList.add('active');
+            localStorage.setItem('gh_theme', t);
+        }
+        setTheme(localStorage.getItem('gh_theme') || 'dark');
+
         // ============ دوال عامة ============
         function showGame(gameId) {
-            const all = ['snake','xo','memory','guess','typing','puzzle','2048','minesweeper','sudoku','ball','flappy','reaction','mole','dice','ice','rps'];
-            all.forEach(g => document.getElementById(g)?.classList.add('hidden'));
-            document.getElementById(gameId)?.classList.remove('hidden');
-            const inits = {
-                snake: startSnakeGame, xo: resetXO, memory: startMemoryGame,
-                guess: startGuessGame, typing: startTypingGame, puzzle: startPuzzleGame,
-                '2048': start2048, minesweeper: startMinesweeper, sudoku: startSudoku,
-                ball: startBallGame, flappy: startFlappyGame, reaction: resetReaction,
-                mole: startMoleGame, dice: resetDiceGame, ice: startIceGame, rps: resetRPS
-            };
-            if (inits[gameId]) inits[gameId]();
-            document.getElementById(gameId)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            var all = ['snake','xo','memory','guess','typing','puzzle','2048','minesweeper','sudoku','ball','flappy','reaction','mole','dice','ice','rps'];
+            all.forEach(function(g) {
+                var el = document.getElementById(g);
+                if (el) el.classList.add('hidden');
+            });
+            var el = document.getElementById(gameId);
+            if (el) el.classList.remove('hidden');
+
+            if (gameId === 'snake') startSnakeGame();
+            else if (gameId === 'xo') resetXO();
+            else if (gameId === 'memory') startMemoryGame();
+            else if (gameId === 'guess') startGuessGame();
+            else if (gameId === 'typing') startTypingGame();
+            else if (gameId === 'puzzle') startPuzzleGame();
+            else if (gameId === '2048') start2048();
+            else if (gameId === 'minesweeper') startMinesweeper();
+            else if (gameId === 'sudoku') startSudoku();
+            else if (gameId === 'ball') startBallGame();
+            else if (gameId === 'flappy') startFlappyGame();
+            else if (gameId === 'reaction') resetReaction();
+            else if (gameId === 'mole') startMoleGame();
+            else if (gameId === 'dice') resetDiceGame();
+            else if (gameId === 'ice') startIceGame();
+            else if (gameId === 'rps') resetRPS();
+
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
-        function showWinDialog(title, msg, stars = 3, icon = '🏆') {
+        function showWinDialog(title, msg, stars, icon) {
+            stars = stars || 3;
+            icon = icon || '🏆';
             document.getElementById('winTitle').textContent = title;
             document.getElementById('winMessage').textContent = msg;
             document.getElementById('winIcon').textContent = icon;
-            document.getElementById('winStars').textContent = '⭐'.repeat(Math.min(Math.max(stars,1), 5));
+            document.getElementById('winStars').textContent = '⭐'.repeat(Math.min(Math.max(stars, 1), 5));
             document.getElementById('winOverlay').classList.add('show');
         }
+
         function closeWinDialog() {
             document.getElementById('winOverlay').classList.remove('show');
         }
+
         document.getElementById('winOverlay').addEventListener('click', function(e) {
             if (e.target === this) closeWinDialog();
         });
 
         // ============ 1. الثعبان ============
-        let snake, snakeDir, snakeFood, snakeScore, snakeInterval, snakeTouchX, snakeTouchY;
+        var snake, snakeDir, snakeFood, snakeScore, snakeInterval, snakeTouchX, snakeTouchY;
         function startSnakeGame() {
-            const canvas = document.getElementById('snakeCanvas');
+            var canvas = document.getElementById('snakeCanvas');
             canvas.width = Math.min(360, window.innerWidth - 30);
             canvas.height = canvas.width;
-            const ctx = canvas.getContext('2d');
-            const gridSize = 18;
+            var ctx = canvas.getContext('2d');
+            var gridSize = 18;
             snake = [{x: 9, y: 9}];
             snakeDir = {x: 1, y: 0};
             snakeScore = 0;
             document.getElementById('snakeScore').textContent = '0';
             generateSnakeFood(gridSize);
             if (snakeInterval) clearInterval(snakeInterval);
-            snakeInterval = setInterval(() => {
+            snakeInterval = setInterval(function() {
                 updateSnake(ctx, canvas, gridSize);
                 drawSnake(ctx, canvas, gridSize);
             }, 110);
-            canvas.addEventListener('touchstart', e => { snakeTouchX = e.touches[0].clientX; snakeTouchY = e.touches[0].clientY; });
-            canvas.addEventListener('touchmove', e => {
+
+            canvas.addEventListener('touchstart', function(e) {
+                snakeTouchX = e.touches[0].clientX;
+                snakeTouchY = e.touches[0].clientY;
+            });
+            canvas.addEventListener('touchmove', function(e) {
                 e.preventDefault();
-                const dx = e.touches[0].clientX - snakeTouchX;
-                const dy = e.touches[0].clientY - snakeTouchY;
+                var dx = e.touches[0].clientX - snakeTouchX;
+                var dy = e.touches[0].clientY - snakeTouchY;
                 if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 15) {
-                    if (dx > 0 && snakeDir.x === 0) snakeDir = {x:1, y:0};
-                    else if (dx < 0 && snakeDir.x === 0) snakeDir = {x:-1, y:0};
+                    if (dx > 0 && snakeDir.x === 0) snakeDir = {x: 1, y: 0};
+                    else if (dx < 0 && snakeDir.x === 0) snakeDir = {x: -1, y: 0};
                 } else if (Math.abs(dy) > 15) {
-                    if (dy > 0 && snakeDir.y === 0) snakeDir = {x:0, y:1};
-                    else if (dy < 0 && snakeDir.y === 0) snakeDir = {x:0, y:-1};
+                    if (dy > 0 && snakeDir.y === 0) snakeDir = {x: 0, y: 1};
+                    else if (dy < 0 && snakeDir.y === 0) snakeDir = {x: 0, y: -1};
                 }
             });
             document.addEventListener('keydown', snakeKeyHandler);
         }
+
         function snakeKeyHandler(e) {
-            const map = {ArrowUp:{x:0,y:-1},ArrowDown:{x:0,y:1},ArrowLeft:{x:-1,y:0},ArrowRight:{x:1,y:0}};
-            const d = map[e.key];
-            if (d && ((d.x !== -snakeDir.x)||(d.y !== -snakeDir.y))) {
-                if ((d.x!==0 && snakeDir.x===0)||(d.y!==0 && snakeDir.y===0)) snakeDir = d;
+            var map = {ArrowUp: {x: 0, y: -1}, ArrowDown: {x: 0, y: 1}, ArrowLeft: {x: -1, y: 0}, ArrowRight: {x: 1, y: 0}};
+            var d = map[e.key];
+            if (d && ((d.x !== -snakeDir.x) || (d.y !== -snakeDir.y))) {
+                if ((d.x !== 0 && snakeDir.x === 0) || (d.y !== 0 && snakeDir.y === 0)) snakeDir = d;
             }
         }
-        function generateSnakeFood(gs) { snakeFood = {x: Math.floor(Math.random()*gs), y: Math.floor(Math.random()*gs)}; }
+
+        function generateSnakeFood(gs) {
+            snakeFood = {x: Math.floor(Math.random() * gs), y: Math.floor(Math.random() * gs)};
+        }
+
         function updateSnake(ctx, canvas, gs) {
-            let head = {x: snake[0].x + snakeDir.x, y: snake[0].y + snakeDir.y};
+            var head = {x: snake[0].x + snakeDir.x, y: snake[0].y + snakeDir.y};
             if (head.x < 0) head.x = gs - 1;
             if (head.x >= gs) head.x = 0;
             if (head.y < 0) head.y = gs - 1;
             if (head.y >= gs) head.y = 0;
-            if (snake.some(s => s.x === head.x && s.y === head.y)) {
-                clearInterval(snakeInterval);
-                showWinDialog('انتهت اللعبة!', `النتيجة: ${snakeScore} 🍎`, snakeScore>60?3:snakeScore>25?2:1, '🐍');
-                return;
+            for (var i = 0; i < snake.length; i++) {
+                if (snake[i].x === head.x && snake[i].y === head.y) {
+                    clearInterval(snakeInterval);
+                    showWinDialog('انتهت اللعبة!', 'النتيجة: ' + snakeScore + ' 🍎', snakeScore > 60 ? 3 : snakeScore > 25 ? 2 : 1, '🐍');
+                    return;
+                }
             }
             snake.unshift(head);
             if (head.x === snakeFood.x && head.y === snakeFood.y) {
                 snakeScore += 10;
                 document.getElementById('snakeScore').textContent = snakeScore;
                 generateSnakeFood(gs);
-            } else { snake.pop(); }
+            } else {
+                snake.pop();
+            }
         }
+
         function drawSnake(ctx, canvas, gs) {
-            const cell = canvas.width / gs;
-            ctx.fillStyle = '#0a0a1a'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.strokeStyle = '#1a1a2e'; ctx.lineWidth = 0.3;
-            for (let i=0;i<=gs;i++) { ctx.beginPath(); ctx.moveTo(i*cell,0); ctx.lineTo(i*cell,canvas.height); ctx.stroke(); ctx.beginPath(); ctx.moveTo(0,i*cell); ctx.lineTo(canvas.width,i*cell); ctx.stroke(); }
-            snake.forEach((s,i) => {
-                ctx.fillStyle = i===0 ? '#48dbfb' : '#a29bfe';
-                ctx.shadowBlur = 8; ctx.shadowColor = i===0 ? '#48dbfb' : '#a29bfe';
-                ctx.beginPath(); ctx.roundRect(s.x*cell+2, s.y*cell+2, cell-4, cell-4, 6); ctx.fill(); ctx.shadowBlur = 0;
+            var cell = canvas.width / gs;
+            ctx.fillStyle = '#0a0a1a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = '#1a1a2e';
+            ctx.lineWidth = 0.3;
+            snake.forEach(function(s, i) {
+                ctx.fillStyle = i === 0 ? '#48dbfb' : '#a29bfe';
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = i === 0 ? '#48dbfb' : '#a29bfe';
+                ctx.beginPath();
+                ctx.roundRect(s.x * cell + 2, s.y * cell + 2, cell - 4, cell - 4, 6);
+                ctx.fill();
+                ctx.shadowBlur = 0;
             });
-            ctx.fillStyle = '#ff6b6b'; ctx.shadowBlur = 12; ctx.shadowColor = '#ff6b6b';
-            ctx.beginPath(); ctx.arc(snakeFood.x*cell+cell/2, snakeFood.y*cell+cell/2, cell/2-3, 0, Math.PI*2); ctx.fill(); ctx.shadowBlur = 0;
+            ctx.fillStyle = '#ff6b6b';
+            ctx.shadowBlur = 12;
+            ctx.shadowColor = '#ff6b6b';
+            ctx.beginPath();
+            ctx.arc(snakeFood.x * cell + cell / 2, snakeFood.y * cell + cell / 2, cell / 2 - 3, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
         }
 
         // ============ 2. XO ============
-        let xoBoard, xoPlayer, xoActive;
-        function resetXO() { xoBoard = Array(9).fill(''); xoPlayer = 'X'; xoActive = true; document.getElementById('xoTurn').textContent = 'X'; renderXO(); }
+        var xoBoard, xoPlayer, xoActive;
+        function resetXO() {
+            xoBoard = ['', '', '', '', '', '', '', '', ''];
+            xoPlayer = 'X';
+            xoActive = true;
+            document.getElementById('xoTurn').textContent = 'X';
+            renderXO();
+        }
+
         function renderXO() {
-            const b = document.getElementById('xoBoard'); b.innerHTML = '';
-            xoBoard.forEach((c,i) => {
-                const d = document.createElement('div'); d.className = 'xo-cell';
-                if (c==='X') d.classList.add('x'); if (c==='O') d.classList.add('o');
-                d.textContent = c; d.onclick = () => xoMove(i); b.appendChild(d);
+            var b = document.getElementById('xoBoard');
+            b.innerHTML = '';
+            xoBoard.forEach(function(c, i) {
+                var d = document.createElement('div');
+                d.className = 'xo-cell';
+                if (c === 'X') d.classList.add('x');
+                if (c === 'O') d.classList.add('o');
+                d.textContent = c;
+                d.onclick = function() { xoMove(i); };
+                b.appendChild(d);
             });
         }
+
         function xoMove(i) {
-            if (xoBoard[i] || !xoActive) return;
-            xoBoard[i] = xoPlayer; renderXO();
-            const w = checkXOWin();
-            if (w) { xoActive = false; setTimeout(()=>showWinDialog('فوز!',`اللاعب ${w} فاز!`,3,w==='X'?'❌':'⭕'),300); }
-            else if (xoBoard.every(c=>c)) { xoActive = false; setTimeout(()=>showWinDialog('تعادل!','لا يوجد فائز 🤝',2,'🤝'),300); }
-            else { xoPlayer = xoPlayer==='X'?'O':'X'; document.getElementById('xoTurn').textContent = xoPlayer; }
+            if (xoBoard[i] !== '' || !xoActive) return;
+            xoBoard[i] = xoPlayer;
+            renderXO();
+            var w = checkXOWin();
+            if (w) {
+                xoActive = false;
+                setTimeout(function() { showWinDialog('فوز!', 'اللاعب ' + w + ' فاز!', 3, w === 'X' ? '❌' : '⭕'); }, 300);
+            } else if (xoBoard.every(function(c) { return c !== ''; })) {
+                xoActive = false;
+                setTimeout(function() { showWinDialog('تعادل!', 'لا يوجد فائز 🤝', 2, '🤝'); }, 300);
+            } else {
+                xoPlayer = xoPlayer === 'X' ? 'O' : 'X';
+                document.getElementById('xoTurn').textContent = xoPlayer;
+            }
         }
+
         function checkXOWin() {
-            const w = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-            for (const [a,b,c] of w) if (xoBoard[a]&&xoBoard[a]===xoBoard[b]&&xoBoard[a]===xoBoard[c]) return xoBoard[a];
+            var wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+            for (var i = 0; i < wins.length; i++) {
+                var a = wins[i][0], b = wins[i][1], c = wins[i][2];
+                if (xoBoard[a] && xoBoard[a] === xoBoard[b] && xoBoard[a] === xoBoard[c]) return xoBoard[a];
+            }
             return null;
         }
 
         // ============ 3. الذاكرة ============
-        let memCards, memFlipped, memMatched, memPairs;
+        var memCards, memFlipped, memMatched, memPairs;
         function startMemoryGame() {
-            const e = ['🎮','🎯','🎨','🎵','🎭','🎪','🎲','🎸'];
-            memCards = [...e,...e].sort(()=>Math.random()-0.5);
-            memFlipped=[]; memMatched=[]; memPairs=0;
-            document.getElementById('memoryPairs').textContent='0'; renderMemory();
+            var e = ['🎮','🎯','🎨','🎵','🎭','🎪','🎲','🎸'];
+            memCards = e.concat(e).sort(function() { return Math.random() - 0.5; });
+            memFlipped = [];
+            memMatched = [];
+            memPairs = 0;
+            document.getElementById('memoryPairs').textContent = '0';
+            renderMemory();
         }
+
         function renderMemory() {
-            const g = document.getElementById('memoryGrid'); g.innerHTML = '';
-            memCards.forEach((e,i)=>{
-                const c=document.createElement('div'); c.className='memory-card'; c.onclick=()=>flipMemory(i,c);
-                if(memMatched.includes(i)){c.classList.add('matched');c.textContent=e;}
-                else if(memFlipped.includes(i)){c.classList.add('flipped');c.textContent=e;}
+            var g = document.getElementById('memoryGrid');
+            g.innerHTML = '';
+            memCards.forEach(function(e, i) {
+                var c = document.createElement('div');
+                c.className = 'memory-card';
+                c.onclick = function() { flipMemory(i, c); };
+                if (memMatched.indexOf(i) !== -1) { c.classList.add('matched'); c.textContent = e; }
+                else if (memFlipped.indexOf(i) !== -1) { c.classList.add('flipped'); c.textContent = e; }
                 g.appendChild(c);
             });
         }
-        function flipMemory(i,c) {
-            if(memFlipped.length===2||memFlipped.includes(i)||memMatched.includes(i))return;
-            memFlipped.push(i);c.classList.add('flipped');c.textContent=memCards[i];
-            if(memFlipped.length===2){setTimeout(()=>{
-                if(memCards[memFlipped[0]]===memCards[memFlipped[1]]){memMatched.push(...memFlipped);memPairs++;document.getElementById('memoryPairs').textContent=memPairs;
-                    if(memMatched.length===memCards.length) setTimeout(()=>showWinDialog('رائع!','أكملت كل الأزواج! 🧠',3,'🧠'),500);}
-                memFlipped=[];renderMemory();},600);}
+
+        function flipMemory(i, c) {
+            if (memFlipped.length === 2 || memFlipped.indexOf(i) !== -1 || memMatched.indexOf(i) !== -1) return;
+            memFlipped.push(i);
+            c.classList.add('flipped');
+            c.textContent = memCards[i];
+            if (memFlipped.length === 2) {
+                setTimeout(function() {
+                    if (memCards[memFlipped[0]] === memCards[memFlipped[1]]) {
+                        memMatched = memMatched.concat(memFlipped);
+                        memPairs++;
+                        document.getElementById('memoryPairs').textContent = memPairs;
+                        if (memMatched.length === memCards.length) {
+                            setTimeout(function() { showWinDialog('رائع!', 'أكملت كل الأزواج! 🧠', 3, '🧠'); }, 500);
+                        }
+                    }
+                    memFlipped = [];
+                    renderMemory();
+                }, 600);
+            }
         }
 
         // ============ 4. التخمين ============
-        let guessNum, guessAtt;
-        function startGuessGame(){guessNum=Math.floor(Math.random()*100)+1;guessAtt=0;document.getElementById('guessAttempts').textContent='0';document.getElementById('guessMessage').textContent='';document.getElementById('guessInput').value='';}
-        function checkGuess(){
-            const inp=document.getElementById('guessInput'),msg=document.getElementById('guessMessage');
-            const g=parseInt(inp.value);if(!g||g<1||g>100){msg.textContent='⚠️ بين 1 و 100';msg.style.color='#ff6b6b';return;}
-            guessAtt++;document.getElementById('guessAttempts').textContent=guessAtt;
-            if(g===guessNum){msg.textContent='';showWinDialog('أحسنت!',`الرقم ${guessNum} في ${guessAtt} محاولة`,guessAtt<=3?3:guessAtt<=7?2:1,'🎯');}
-            else{msg.textContent=g<guessNum?'📈 أكبر':'📉 أصغر';msg.style.color='#feca57';}inp.value='';inp.focus();}
+        var guessNum, guessAtt;
+        function startGuessGame() {
+            guessNum = Math.floor(Math.random() * 100) + 1;
+            guessAtt = 0;
+            document.getElementById('guessAttempts').textContent = '0';
+            document.getElementById('guessMessage').textContent = '';
+            document.getElementById('guessInput').value = '';
+        }
+
+        function checkGuess() {
+            var inp = document.getElementById('guessInput');
+            var msg = document.getElementById('guessMessage');
+            var g = parseInt(inp.value);
+            if (!g || g < 1 || g > 100) { msg.textContent = '⚠️ بين 1 و 100'; msg.style.color = '#ff6b6b'; return; }
+            guessAtt++;
+            document.getElementById('guessAttempts').textContent = guessAtt;
+            if (g === guessNum) {
+                msg.textContent = '';
+                showWinDialog('أحسنت!', 'الرقم ' + guessNum + ' في ' + guessAtt + ' محاولة', guessAtt <= 3 ? 3 : guessAtt <= 7 ? 2 : 1, '🎯');
+            } else {
+                msg.textContent = g < guessNum ? '📈 أكبر' : '📉 أصغر';
+                msg.style.color = '#feca57';
+            }
+            inp.value = '';
+            inp.focus();
+        }
 
         // ============ 5. الكتابة ============
-        let typeWords, typeScore, typeTimer, typeInterval;
-        function startTypingGame(){
-            const w=['سرعة','كتابة','مبرمج','العاب','تحدي','لوحة','مفاتيح','كمبيوتر','تعلم','ذكاء','مرح','فوز','وقت','نقاط','لعبة','مطور','برمجة','تصميم'];
-            typeWords=[...w].sort(()=>Math.random()-0.5);typeScore=0;typeTimer=60;
-            document.getElementById('typingScore').textContent='0';document.getElementById('typingTimer').textContent='60';
-            const inp=document.getElementById('typingInput');inp.value='';inp.disabled=false;inp.focus();
-            if(typeInterval)clearInterval(typeInterval);renderTypeWords();
-            typeInterval=setInterval(()=>{typeTimer--;document.getElementById('typingTimer').textContent=typeTimer;
-                if(typeTimer<=0){clearInterval(typeInterval);inp.disabled=true;showWinDialog('انتهى الوقت!',`${typeScore} كلمة`,typeScore>12?3:typeScore>6?2:1,'⌨️');}},1000);
-            inp.oninput=e=>{if(e.target.value.trim()===typeWords[0]){typeScore++;document.getElementById('typingScore').textContent=typeScore;typeWords.shift();e.target.value='';renderTypeWords();}};}
-        function renderTypeWords(){document.getElementById('typingArea').innerHTML=typeWords.map((w,i)=>`<span class="typing-word ${i===0?'current':''}">${w}</span>`).join(' ');}
+        var typeWords, typeScore, typeTimer, typeInterval;
+        function startTypingGame() {
+            var w = ['سرعة','كتابة','مبرمج','العاب','تحدي','لوحة','مفاتيح','كمبيوتر','تعلم','ذكاء','مرح','فوز','وقت','نقاط','لعبة','مطور','برمجة','تصميم'];
+            typeWords = w.slice().sort(function() { return Math.random() - 0.5; });
+            typeScore = 0;
+            typeTimer = 60;
+            document.getElementById('typingScore').textContent = '0';
+            document.getElementById('typingTimer').textContent = '60';
+            var inp = document.getElementById('typingInput');
+            inp.value = '';
+            inp.disabled = false;
+            inp.focus();
+            if (typeInterval) clearInterval(typeInterval);
+            renderTypeWords();
+            typeInterval = setInterval(function() {
+                typeTimer--;
+                document.getElementById('typingTimer').textContent = typeTimer;
+                if (typeTimer <= 0) {
+                    clearInterval(typeInterval);
+                    inp.disabled = true;
+                    showWinDialog('انتهى الوقت!', typeScore + ' كلمة', typeScore > 12 ? 3 : typeScore > 6 ? 2 : 1, '⌨️');
+                }
+            }, 1000);
+            inp.oninput = function(e) {
+                if (e.target.value.trim() === typeWords[0]) {
+                    typeScore++;
+                    document.getElementById('typingScore').textContent = typeScore;
+                    typeWords.shift();
+                    e.target.value = '';
+                    renderTypeWords();
+                }
+            };
+        }
+
+        function renderTypeWords() {
+            document.getElementById('typingArea').innerHTML = typeWords.map(function(w, i) {
+                return '<span class="typing-word' + (i === 0 ? ' current' : '') + '" style="padding:3px 7px;border-radius:6px;display:inline-block;margin:1px;' + (i === 0 ? 'background:rgba(253,203,110,0.4);' : '') + '">' + w + '</span>';
+            }).join(' ');
+        }
 
         // ============ 6. اللغز ============
-        let puzzTiles, puzzMoves, puzzSize = 4;
-        function setPuzzleDifficulty(size){puzzSize=size;document.querySelectorAll('.diff-btn').forEach(b=>b.classList.remove('active'));document.getElementById(size===3?'diffEasy':size===4?'diffMedium':'diffHard').classList.add('active');startPuzzleGame();}
-        function startPuzzleGame(){const total=puzzSize*puzzSize;puzzTiles=Array.from({length:total-1},(_,i)=>i+1);puzzTiles.push('');puzzMoves=0;document.getElementById('puzzleMoves').textContent='0';renderPuzzle();}
-        function shufflePuzzle(){for(let i=puzzTiles.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[puzzTiles[i],puzzTiles[j]]=[puzzTiles[j],puzzTiles[i]];}puzzMoves=0;document.getElementById('puzzleMoves').textContent='0';renderPuzzle();}
-        function renderPuzzle(){
-            const grid=document.getElementById('puzzleGrid');grid.innerHTML='';
-            const sizes = {3:'90px',4:'75px',5:'60px'};
-            grid.style.gridTemplateColumns=grid.style.gridTemplateRows=`repeat(${puzzSize}, ${sizes[puzzSize]||'75px'})`;
-            puzzTiles.forEach((t,i)=>{const d=document.createElement('div');d.className='puzzle-tile';if(t===''){d.classList.add('empty');}else{d.textContent=t;d.style.fontSize=puzzSize===5?'0.9em':'1.1em';d.onclick=()=>movePuzz(i);}grid.appendChild(d);});}
-        function movePuzz(i){const empty=puzzTiles.indexOf('');const r=Math.floor(i/puzzSize),c=i%puzzSize,er=Math.floor(empty/puzzSize),ec=empty%puzzSize;if(Math.abs(r-er)+Math.abs(c-ec)===1){[puzzTiles[i],puzzTiles[empty]]=[puzzTiles[empty],puzzTiles[i]];puzzMoves++;document.getElementById('puzzleMoves').textContent=puzzMoves;renderPuzzle();const solved=Array.from({length:puzzSize*puzzSize-1},(_,i)=>i+1).concat(['']).join(',');if(puzzTiles.join(',')===solved)setTimeout(()=>showWinDialog('مذهل!',`${puzzMoves} حركة`,puzzMoves<40?3:2,'🧩'),300);}}
+        var puzzTiles, puzzMoves, puzzSize = 4;
+        function setPuzzleDifficulty(size) {
+            puzzSize = size;
+            document.querySelectorAll('.diff-btn').forEach(function(b) { b.classList.remove('active'); });
+            document.getElementById(size === 3 ? 'diffEasy' : size === 4 ? 'diffMedium' : 'diffHard').classList.add('active');
+            startPuzzleGame();
+        }
+
+        function startPuzzleGame() {
+            var total = puzzSize * puzzSize;
+            puzzTiles = [];
+            for (var i = 1; i < total; i++) puzzTiles.push(i);
+            puzzTiles.push('');
+            puzzMoves = 0;
+            document.getElementById('puzzleMoves').textContent = '0';
+            renderPuzzle();
+        }
+
+        function shufflePuzzle() {
+            for (var i = puzzTiles.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var temp = puzzTiles[i];
+                puzzTiles[i] = puzzTiles[j];
+                puzzTiles[j] = temp;
+            }
+            puzzMoves = 0;
+            document.getElementById('puzzleMoves').textContent = '0';
+            renderPuzzle();
+        }
+
+        function renderPuzzle() {
+            var grid = document.getElementById('puzzleGrid');
+            grid.innerHTML = '';
+            var sizes = {3: '90px', 4: '75px', 5: '60px'};
+            grid.style.gridTemplateColumns = grid.style.gridTemplateRows = 'repeat(' + puzzSize + ', ' + (sizes[puzzSize] || '75px') + ')';
+            puzzTiles.forEach(function(t, i) {
+                var d = document.createElement('div');
+                d.className = 'puzzle-tile';
+                if (t === '') { d.classList.add('empty'); }
+                else { d.textContent = t; d.style.fontSize = puzzSize === 5 ? '0.9em' : '1.1em'; d.onclick = function() { movePuzz(i); }; }
+                grid.appendChild(d);
+            });
+        }
+
+        function movePuzz(i) {
+            var empty = puzzTiles.indexOf('');
+            var er = Math.floor(empty / puzzSize), ec = empty % puzzSize;
+            var r = Math.floor(i / puzzSize), c = i % puzzSize;
+            if (Math.abs(r - er) + Math.abs(c - ec) === 1) {
+                var temp = puzzTiles[i];
+                puzzTiles[i] = puzzTiles[empty];
+                puzzTiles[empty] = temp;
+                puzzMoves++;
+                document.getElementById('puzzleMoves').textContent = puzzMoves;
+                renderPuzzle();
+                var solved = [];
+                for (var j = 1; j < puzzSize * puzzSize; j++) solved.push(j);
+                solved.push('');
+                if (puzzTiles.join(',') === solved.join(',')) {
+                    setTimeout(function() { showWinDialog('مذهل!', puzzMoves + ' حركة', puzzMoves < 40 ? 3 : 2, '🧩'); }, 300);
+                }
+            }
+        }
 
         // ============ 7. 2048 ============
-        let grid2048, score2048;
-        function start2048(){grid2048=Array(16).fill(0);score2048=0;document.getElementById('score2048').textContent='0';add2048Tile();add2048Tile();render2048();}
-        function add2048Tile(){const empty=grid2048.map((v,i)=>v===0?i:null).filter(v=>v!==null);if(empty.length){const i=empty[Math.floor(Math.random()*empty.length)];grid2048[i]=Math.random()<0.9?2:4;}}
-        function render2048(){const g=document.getElementById('grid2048');g.innerHTML='';grid2048.forEach(v=>{const d=document.createElement('div');d.className='tile-2048';if(v>0){d.textContent=v;d.setAttribute('data-value',v);}g.appendChild(d);});}
-        function move2048(dir){
-            let moved=false;const old=[...grid2048];
-            const getLine=(start,step,count)=>{const l=[];for(let i=0;i<count;i++)l.push(grid2048[start+i*step]);return l;};
-            const setLine=(start,step,line)=>{for(let i=0;i<line.length;i++)grid2048[start+i*step]=line[i];};
-            const slide=(line)=>{let arr=line.filter(v=>v);for(let i=0;i<arr.length-1;i++){if(arr[i]===arr[i+1]){arr[i]*=2;score2048+=arr[i];arr.splice(i+1,1);arr.push(0);}}while(arr.length<line.length)arr.push(0);return arr;};
-            const lines=[];
-            if(dir==='left'){for(let r=0;r<4;r++){const l=getLine(r*4,1,4);const sl=slide(l);setLine(r*4,1,sl);}}
-            else if(dir==='right'){for(let r=0;r<4;r++){const l=getLine(r*4+3,-1,4);const sl=slide(l);setLine(r*4+3,-1,sl);}}
-            else if(dir==='up'){for(let c=0;c<4;c++){const l=getLine(c,4,4);const sl=slide(l);setLine(c,4,sl);}}
-            else if(dir==='down'){for(let c=0;c<4;c++){const l=getLine(c+12,-4,4);const sl=slide(l);setLine(c+12,-4,sl);}}
-            moved=old.some((v,i)=>v!==grid2048[i]);
-            if(moved){add2048Tile();document.getElementById('score2048').textContent=score2048;render2048();
-                if(grid2048.includes(2048))setTimeout(()=>showWinDialog('🎉 2048!','وصلت إلى 2048!',3,'🔢'),300);
-                else if(!grid2048.includes(0)&&!canMerge2048())setTimeout(()=>showWinDialog('انتهت!',`النتيجة: ${score2048}`,2,'🔢'),300);}
+        var grid2048, score2048;
+        function start2048() {
+            grid2048 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+            score2048 = 0;
+            document.getElementById('score2048').textContent = '0';
+            add2048Tile();
+            add2048Tile();
+            render2048();
         }
-        function canMerge2048(){for(let i=0;i<4;i++){for(let j=0;j<3;j++){if(grid2048[i*4+j]===grid2048[i*4+j+1])return true;if(grid2048[j*4+i]===grid2048[(j+1)*4+i])return true;}}return false;}
-        document.addEventListener('keydown',e=>{const map={ArrowLeft:'left',ArrowRight:'right',ArrowUp:'up',ArrowDown:'down'};if(map[e.key]&&!document.getElementById('2048').classList.contains('hidden')){e.preventDefault();move2048(map[e.key]);}});
-        let touch2048Start;
-        document.getElementById('grid2048')?.addEventListener('touchstart',e=>{touch2048Start={x:e.touches[0].clientX,y:e.touches[0].clientY};});
-        document.getElementById('grid2048')?.addEventListener('touchend',e=>{if(!touch2048Start)return;const dx=e.changedTouches[0].clientX-touch2048Start.x,dy=e.changedTouches[0].clientY-touch2048Start.y;if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>20)move2048(dx>0?'right':'left');else if(Math.abs(dy)>20)move2048(dy>0?'down':'up');touch2048Start=null;});
+
+        function add2048Tile() {
+            var empty = [];
+            for (var i = 0; i < 16; i++) if (grid2048[i] === 0) empty.push(i);
+            if (empty.length) grid2048[empty[Math.floor(Math.random() * empty.length)]] = Math.random() < 0.9 ? 2 : 4;
+        }
+
+        function render2048() {
+            var g = document.getElementById('grid2048');
+            g.innerHTML = '';
+            grid2048.forEach(function(v) {
+                var d = document.createElement('div');
+                d.className = 'tile-2048';
+                if (v > 0) { d.textContent = v; d.setAttribute('data-value', v); }
+                g.appendChild(d);
+            });
+        }
+
+        function move2048(dir) {
+            var old = grid2048.slice();
+            function slide(arr) {
+                var a = arr.filter(function(v) { return v !== 0; });
+                for (var i = 0; i < a.length - 1; i++) {
+                    if (a[i] === a[i + 1]) { a[i] *= 2; score2048 += a[i]; a.splice(i + 1, 1); a.push(0); }
+                }
+                while (a.length < 4) a.push(0);
+                return a;
+            }
+            if (dir === 'left') for (var r = 0; r < 4; r++) { var row = [grid2048[r*4],grid2048[r*4+1],grid2048[r*4+2],grid2048[r*4+3]]; var nr = slide(row); for (var c = 0; c < 4; c++) grid2048[r*4+c] = nr[c]; }
+            else if (dir === 'right') for (var r = 0; r < 4; r++) { var row = [grid2048[r*4+3],grid2048[r*4+2],grid2048[r*4+1],grid2048[r*4]]; var nr = slide(row); for (var c = 0; c < 4; c++) grid2048[r*4+(3-c)] = nr[c]; }
+            else if (dir === 'up') for (var c = 0; c < 4; c++) { var col = [grid2048[c],grid2048[c+4],grid2048[c+8],grid2048[c+12]]; var nc = slide(col); for (var r = 0; r < 4; r++) grid2048[c+r*4] = nc[r]; }
+            else if (dir === 'down') for (var c = 0; c < 4; c++) { var col = [grid2048[c+12],grid2048[c+8],grid2048[c+4],grid2048[c]]; var nc = slide(col); for (var r = 0; r < 4; r++) grid2048[c+(3-r)*4] = nc[r]; }
+            var moved = false;
+            for (var i = 0; i < 16; i++) if (old[i] !== grid2048[i]) moved = true;
+            if (moved) { add2048Tile(); document.getElementById('score2048').textContent = score2048; render2048(); if (grid2048.indexOf(2048) !== -1) setTimeout(function() { showWinDialog('🎉 2048!', 'وصلت إلى 2048!', 3, '🔢'); }, 300); }
+        }
 
         // ============ 8. كاسح ألغام ============
-        let msGrid, msRevealed, msFlagged, msGameOver, msSize=8, msMines=10;
-        function startMinesweeper(){
-            msSize=8;msMines=10;msGameOver=false;
-            msGrid=Array(msSize*msSize).fill(0);msRevealed=Array(msSize*msSize).fill(false);msFlagged=Array(msSize*msSize).fill(false);
-            for(let i=0;i<msMines;i++){let pos;do{pos=Math.floor(Math.random()*msSize*msSize);}while(msGrid[pos]===-1);msGrid[pos]=-1;}
-            for(let i=0;i<msSize*msSize;i++){if(msGrid[i]!==-1){let c=0;const r=Math.floor(i/msSize),col=i%msSize;for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){const nr=r+dr,nc=col+dc;if(nr>=0&&nr<msSize&&nc>=0&&nc<msSize&&msGrid[nr*msSize+nc]===-1)c++;}msGrid[i]=c;}}
-            document.getElementById('minesLeft').textContent=msMines;renderMS();
+        var msGrid, msRevealed, msFlagged, msGameOver, msMinesCount;
+        function startMinesweeper() {
+            var s = 8;
+            msMinesCount = 10;
+            msGameOver = false;
+            msGrid = [];
+            msRevealed = [];
+            msFlagged = [];
+            for (var i = 0; i < s * s; i++) { msGrid[i] = 0; msRevealed[i] = false; msFlagged[i] = false; }
+            for (var m = 0; m < msMinesCount; m++) { var p; do { p = Math.floor(Math.random() * s * s); } while (msGrid[p] === -1); msGrid[p] = -1; }
+            for (var i = 0; i < s * s; i++) {
+                if (msGrid[i] !== -1) { var cnt = 0; var r = Math.floor(i / s), c = i % s;
+                    for (var dr = -1; dr <= 1; dr++) for (var dc = -1; dc <= 1; dc++) { var nr = r + dr, nc = c + dc; if (nr >= 0 && nr < s && nc >= 0 && nc < s && msGrid[nr * s + nc] === -1) cnt++; }
+                    msGrid[i] = cnt; }
+            }
+            document.getElementById('minesLeft').textContent = msMinesCount;
+            var g = document.getElementById('minesweeperGrid');
+            g.style.gridTemplateColumns = 'repeat(' + s + ', 1fr)';
+            g.innerHTML = '';
+            for (var i = 0; i < s * s; i++) {
+                var d = document.createElement('div');
+                d.style.cssText = 'aspect-ratio:1;background:#1a1a2e;border-radius:5px;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:0.8em;cursor:pointer;';
+                d.addEventListener('click', (function(idx) { return function() { revealMS(idx, s); }; })(i));
+                d.addEventListener('contextmenu', (function(idx, el) { return function(e) { e.preventDefault(); toggleMS(idx, el); }; })(i, d));
+                g.appendChild(d);
+            }
         }
-        function renderMS(){
-            const g=document.getElementById('minesweeperGrid');g.style.gridTemplateColumns=`repeat(${msSize}, 1fr)`;
-            g.innerHTML='';msGrid.forEach((v,i)=>{const d=document.createElement('div');d.style.aspectRatio='1';d.style.background='#1a1a2e';d.style.borderRadius='5px';d.style.display='flex';d.style.alignItems='center';d.style.justifyContent='center';d.style.fontWeight='bold';d.style.fontSize='0.8em';d.style.cursor='pointer';
-                if(msRevealed[i]){d.style.background='#2d2d4a';if(v===-1)d.textContent='💣';else if(v>0)d.textContent=v;const colors=['','#48dbfb','#55efc4','#feca57','#ff9ff3','#ff6b6b','#e74c3c','#c0392b','#8e44ad'];if(v>0)d.style.color=colors[v]||'#fff';}
-                else if(msFlagged[i]){d.textContent='🚩';d.style.background='#2d1a2e';}
-                d.addEventListener('click',()=>revealMS(i));d.addEventListener('contextmenu',e=>{e.preventDefault();toggleFlagMS(i);});
-                g.appendChild(d);});}
-        function revealMS(i){if(msGameOver||msRevealed[i]||msFlagged[i])return;msRevealed[i]=true;if(msGrid[i]===-1){msGameOver=true;msGrid.forEach((_,j)=>{if(msGrid[j]===-1)msRevealed[j]=true;});renderMS();setTimeout(()=>showWinDialog('انفجر!','ضربت لغم 💣',1,'💣'),400);return;}
-            if(msGrid[i]===0){const r=Math.floor(i/msSize),c=i%msSize;for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){const nr=r+dr,nc=c+dc;if(nr>=0&&nr<msSize&&nc>=0&&nc<msSize&&!msRevealed[nr*msSize+nc])revealMS(nr*msSize+nc);}}
-            renderMS();if(msRevealed.filter((_,j)=>msGrid[j]!==-1).every((r,j)=>r||msGrid[j]===-1)){msGameOver=true;setTimeout(()=>showWinDialog('فوز!','كشفت كل الألغام بأمان! 🚩',3,'🚩'),400);}}
-        function toggleFlagMS(i){if(msGameOver||msRevealed[i])return;msFlagged[i]=!msFlagged[i];const flagged=msFlagged.filter(f=>f).length;document.getElementById('minesLeft').textContent=msMines-flagged;renderMS();}
+
+        function revealMS(i, s) {
+            if (msGameOver || msRevealed[i] || msFlagged[i]) return;
+            msRevealed[i] = true;
+            var g = document.getElementById('minesweeperGrid');
+            g.children[i].style.background = '#2d2d4a';
+            if (msGrid[i] === -1) {
+                msGameOver = true;
+                for (var j = 0; j < s * s; j++) if (msGrid[j] === -1) { msRevealed[j] = true; g.children[j].style.background = '#2d2d4a'; g.children[j].textContent = '💣'; }
+                setTimeout(function() { showWinDialog('انفجر!', 'ضربت لغم 💣', 1, '💣'); }, 400);
+                return;
+            }
+            if (msGrid[i] > 0) g.children[i].textContent = msGrid[i];
+            if (msGrid[i] === 0) { var r = Math.floor(i / s), c = i % s; for (var dr = -1; dr <= 1; dr++) for (var dc = -1; dc <= 1; dc++) { var nr = r + dr, nc = c + dc; if (nr >= 0 && nr < s && nc >= 0 && nc < s) revealMS(nr * s + nc, s); } }
+        }
+
+        function toggleMS(i, el) {
+            if (msGameOver || msRevealed[i]) return;
+            msFlagged[i] = !msFlagged[i];
+            el.textContent = msFlagged[i] ? '🚩' : '';
+            el.style.background = msFlagged[i] ? '#2d1a2e' : '#1a1a2e';
+            var fc = msFlagged.filter(function(f) { return f; }).length;
+            document.getElementById('minesLeft').textContent = msMinesCount - fc;
+        }
 
         // ============ 9. سودوكو ============
-        let sudoGrid, sudoSolution, sudoSelected;
-        function startSudoku(){
-            // Generate simple sudoku (partial fill)
-            sudoGrid=Array(81).fill(0);
-            // Fill diagonal boxes
-            for(let box=0;box<9;box+=3){const nums=[1,2,3,4,5,6,7,8,9].sort(()=>Math.random()-0.5);for(let i=0;i<3;i++)for(let j=0;j<3;j++)sudoGrid[(box+i)*9+(box+j)]=nums[i*3+j];}
-            sudoSolution=[...sudoGrid]; // simplified - not a full solver
-            // Remove some cells
-            for(let i=0;i<40;i++){const pos=Math.floor(Math.random()*81);sudoGrid[pos]=0;}
-            sudoSelected=-1;renderSudoku();renderSudokuNums();
+        var sudoGrid, sudoSelected;
+        function startSudoku() {
+            sudoGrid = [];
+            for (var i = 0; i < 81; i++) sudoGrid[i] = 0;
+            for (var box = 0; box < 9; box += 3) {
+                var n = [1,2,3,4,5,6,7,8,9].sort(function() { return Math.random() - 0.5; });
+                for (var r = 0; r < 3; r++) for (var c = 0; c < 3; c++) sudoGrid[(box + r) * 9 + (box + c)] = n[r * 3 + c];
+            }
+            sudoSelected = -1;
+            renderSudoku();
+            renderSudokuNums();
         }
-        function renderSudoku(){
-            const g=document.getElementById('sudokuGrid');g.innerHTML='';
-            sudoGrid.forEach((v,i)=>{const d=document.createElement('div');d.style.aspectRatio='1';d.style.background=v===0?'#1a1a2e':'#2d2d4a';d.style.display='flex';d.style.alignItems='center';d.style.justifyContent='center';d.style.fontWeight='bold';d.style.fontSize='0.9em';d.style.cursor='pointer';d.style.border='1px solid #333';if(v>0)d.textContent=v;
-                if(i===sudoSelected)d.style.boxShadow='inset 0 0 0 3px #feca57';
-                d.addEventListener('click',()=>{sudoSelected=i;renderSudoku();});g.appendChild(d);});}
-        function renderSudokuNums(){const c=document.getElementById('sudokuNums');c.innerHTML='';for(let i=1;i<=9;i++){const b=document.createElement('button');b.textContent=i;b.className='btn btn-outline btn-xs';b.onclick=()=>{if(sudoSelected>=0&&sudoGrid[sudoSelected]===0){sudoGrid[sudoSelected]=i;renderSudoku();}};c.appendChild(b);}}
-        function checkSudoku(){const allFilled=sudoGrid.every(v=>v>0);if(!allFilled){showWinDialog('لم تكتمل','املأ كل الخانات أولاً',1,'📝');return;}showWinDialog('أحسنت!','أكملت السودوكو!',3,'📝');}
+
+        function renderSudoku() {
+            var g = document.getElementById('sudokuGrid');
+            g.innerHTML = '';
+            sudoGrid.forEach(function(v, i) {
+                var d = document.createElement('div');
+                d.style.cssText = 'aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:0.9em;cursor:pointer;border:1px solid #333;';
+                d.style.background = v === 0 ? '#1a1a2e' : '#2d2d4a';
+                if (v > 0) d.textContent = v;
+                if (i === sudoSelected) d.style.boxShadow = 'inset 0 0 0 3px #feca57';
+                d.addEventListener('click', (function(idx) { return function() { sudoSelected = idx; renderSudoku(); }; })(i));
+                g.appendChild(d);
+            });
+        }
+
+        function renderSudokuNums() {
+            var c = document.getElementById('sudokuNums');
+            c.innerHTML = '';
+            for (var i = 1; i <= 9; i++) {
+                var b = document.createElement('button');
+                b.textContent = i;
+                b.className = 'btn btn-outline btn-xs';
+                b.onclick = (function(n) { return function() { if (sudoSelected >= 0 && sudoGrid[sudoSelected] === 0) { sudoGrid[sudoSelected] = n; renderSudoku(); } }; })(i);
+                c.appendChild(b);
+            }
+        }
+
+        function checkSudoku() {
+            var allFilled = sudoGrid.every(function(v) { return v > 0; });
+            if (!allFilled) { showWinDialog('لم تكتمل', 'املأ كل الخانات أولاً', 1, '📝'); return; }
+            showWinDialog('أحسنت!', 'أكملت السودوكو!', 3, '📝');
+        }
 
         // ============ 10. كسر الطوب ============
-        let ballX,ballY,ballDX,ballDY,paddleX,bricks,ballScore,ballInterval;
-        function startBallGame(){
-            const canvas=document.getElementById('ballCanvas');canvas.width=Math.min(360,window.innerWidth-30);canvas.height=420;const ctx=canvas.getContext('2d');
-            ballX=canvas.width/2;ballY=canvas.height-50;ballDX=3;ballDY=-3;paddleX=canvas.width/2-45;ballScore=0;document.getElementById('ballScore').textContent='0';
-            bricks=[];const rows=5,cols=7,bw=canvas.width/cols-4,bh=20;
-            for(let r=0;r<rows;r++)for(let c=0;c<cols;c++)bricks.push({x:c*(bw+4)+2,y:r*(bh+4)+30,w:bw,h:bh,alive:true});
-            if(ballInterval)clearInterval(ballInterval);
-            ballInterval=setInterval(()=>{updateBall(ctx,canvas);},16);
-            canvas.addEventListener('touchmove',e=>{e.preventDefault();const rect=canvas.getBoundingClientRect();paddleX=Math.min(canvas.width-90,Math.max(0,e.touches[0].clientX-rect.left-45));});
-            document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')paddleX=Math.max(0,paddleX-25);if(e.key==='ArrowRight')paddleX=Math.min(canvas.width-90,paddleX+25);});}
-        function updateBall(ctx,canvas){ballX+=ballDX;ballY+=ballDY;if(ballX<=8||ballX>=canvas.width-8)ballDX*=-1;if(ballY<=8)ballDY*=-1;if(ballY>=canvas.height-30&&ballX>paddleX&&ballX<paddleX+90){ballDY*=-1;ballY=canvas.height-32;}
-            bricks.forEach(b=>{if(b.alive&&ballX>b.x&&ballX<b.x+b.w&&ballY>b.y&&ballY<b.y+b.h){b.alive=false;ballDY*=-1;ballScore+=10;document.getElementById('ballScore').textContent=ballScore;}});
-            if(ballY>canvas.height){clearInterval(ballInterval);showWinDialog('خسرت!',`النتيجة: ${ballScore}`,ballScore>100?2:1,'💎');return;}
-            if(bricks.every(b=>!b.alive)){clearInterval(ballInterval);showWinDialog('فوز!',`${ballScore} نقطة!`,3,'🏆');return;}
-            drawBall(ctx,canvas);}
-        function drawBall(ctx,canvas){ctx.fillStyle='#0a0a1a';ctx.fillRect(0,0,canvas.width,canvas.height);bricks.forEach(b=>{if(b.alive){const g=ctx.createLinearGradient(b.x,b.y,b.x,b.y+b.h);g.addColorStop(0,'#a29bfe');g.addColorStop(1,'#6c5ce7');ctx.fillStyle=g;ctx.fillRect(b.x,b.y,b.w,b.h);}});
-            ctx.fillStyle='#48dbfb';ctx.shadowBlur=10;ctx.shadowColor='#48dbfb';ctx.beginPath();ctx.arc(ballX,ballY,7,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
-            const pg=ctx.createLinearGradient(paddleX,canvas.height-20,paddleX+90,canvas.height-20);pg.addColorStop(0,'#ff6b6b');pg.addColorStop(1,'#fd79a8');ctx.fillStyle=pg;ctx.fillRect(paddleX,canvas.height-20,90,10);}
+        var ballX, ballY, ballDX, ballDY, paddleX, bricks, ballScore, ballInterval;
+        function startBallGame() {
+            var canvas = document.getElementById('ballCanvas');
+            canvas.width = Math.min(360, window.innerWidth - 30);
+            canvas.height = 420;
+            var ctx = canvas.getContext('2d');
+            ballX = canvas.width / 2;
+            ballY = canvas.height - 50;
+            ballDX = 3;
+            ballDY = -3;
+            paddleX = canvas.width / 2 - 45;
+            ballScore = 0;
+            document.getElementById('ballScore').textContent = '0';
+            bricks = [];
+            var rows = 5, cols = 7, bw = canvas.width / cols - 4, bh = 20;
+            for (var r = 0; r < rows; r++) for (var c = 0; c < cols; c++) bricks.push({x: c * (bw + 4) + 2, y: r * (bh + 4) + 30, w: bw, h: bh, alive: true});
+            if (ballInterval) clearInterval(ballInterval);
+            ballInterval = setInterval(function() { updateBall(ctx, canvas); }, 16);
+            canvas.addEventListener('touchmove', function(e) { e.preventDefault(); var rect = canvas.getBoundingClientRect(); paddleX = Math.min(canvas.width - 90, Math.max(0, e.touches[0].clientX - rect.left - 45)); });
+            document.addEventListener('keydown', function(e) { if (e.key === 'ArrowLeft') paddleX = Math.max(0, paddleX - 25); if (e.key === 'ArrowRight') paddleX = Math.min(canvas.width - 90, paddleX + 25); });
+        }
 
-        // ============ 11. طائر فلابي ============
-        let flappyBird,flappyPipes,flappyScore,flappyInterval,flappyGravity,flappyActive;
-        function startFlappyGame(){const canvas=document.getElementById('flappyCanvas');canvas.width=Math.min(360,window.innerWidth-30);canvas.height=500;const ctx=canvas.getContext('2d');
-            flappyBird={x:80,y:canvas.height/2,radius:15,vy:0};flappyPipes=[];flappyScore=0;flappyGravity=0.4;flappyActive=true;document.getElementById('flappyScore').textContent='0';
-            if(flappyInterval)clearInterval(flappyInterval);for(let i=0;i<3;i++)flappyPipes.push(generatePipe(canvas,i*220+canvas.width));
-            canvas.onclick=canvas.ontouchend=()=>{if(flappyActive)flappyBird.vy=-7;};
-            flappyInterval=setInterval(()=>{if(!flappyActive)return;flappyBird.vy+=flappyGravity;flappyBird.y+=flappyBird.vy;
-                if(flappyBird.y<0||flappyBird.y>canvas.height-flappyBird.radius){flappyActive=false;clearInterval(flappyInterval);showWinDialog('اصطدمت!',`النتيجة: ${flappyScore}`,flappyScore>10?3:flappyScore>4?2:1,'🐦');}
-                flappyPipes.forEach(p=>{p.x-=2;if(p.x+p.w<0){flappyPipes.shift();flappyPipes.push(generatePipe(canvas,canvas.width));flappyScore++;document.getElementById('flappyScore').textContent=flappyScore;}
-                    if(flappyBird.x+flappyBird.radius>p.x&&flappyBird.x-flappyBird.radius<p.x+p.w&&(flappyBird.y-flappyBird.radius<p.top||flappyBird.y+flappyBird.radius>p.bottom)){flappyActive=false;clearInterval(flappyInterval);showWinDialog('اصطدمت!',`النتيجة: ${flappyScore}`,flappyScore>10?3:flappyScore>4?2:1,'🐦');}});
-                drawFlappy(ctx,canvas);},20);}
-        function generatePipe(canvas,startX){const gap=130,minTop=50,maxTop=canvas.height-gap-50,top=Math.random()*(maxTop-minTop)+minTop;return{x:startX,top,bottom:top+gap,w:55};}
-        function drawFlappy(ctx,canvas){ctx.fillStyle='#0a0a1a';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#feca57';ctx.shadowBlur=12;ctx.shadowColor='#feca57';ctx.beginPath();ctx.arc(flappyBird.x,flappyBird.y,flappyBird.radius,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(flappyBird.x+5,flappyBird.y-4,5,0,Math.PI*2);ctx.fill();ctx.fillStyle='#000';ctx.beginPath();ctx.arc(flappyBird.x+6,flappyBird.y-4,2,0,Math.PI*2);ctx.fill();flappyPipes.forEach(p=>{const g=ctx.createLinearGradient(p.x,0,p.x+p.w,0);g.addColorStop(0,'#00b894');g.addColorStop(1,'#55efc4');ctx.fillStyle=g;ctx.fillRect(p.x,0,p.w,p.top);ctx.fillRect(p.x,p.bottom,p.w,canvas.height-p.bottom);});ctx.fillStyle='#2d3436';ctx.fillRect(0,canvas.height-5,canvas.width,5);}
+        function updateBall(ctx, canvas) {
+            ballX += ballDX;
+            ballY += ballDY;
+            if (ballX <= 8 || ballX >= canvas.width - 8) ballDX *= -1;
+            if (ballY <= 8) ballDY *= -1;
+            if (ballY >= canvas.height - 30 && ballX > paddleX && ballX < paddleX + 90) { ballDY *= -1; ballY = canvas.height - 32; }
+            bricks.forEach(function(b) { if (b.alive && ballX > b.x && ballX < b.x + b.w && ballY > b.y && ballY < b.y + b.h) { b.alive = false; ballDY *= -1; ballScore += 10; document.getElementById('ballScore').textContent = ballScore; } });
+            if (ballY > canvas.height) { clearInterval(ballInterval); showWinDialog('خسرت!', 'النتيجة: ' + ballScore, ballScore > 100 ? 2 : 1, '💎'); return; }
+            if (bricks.every(function(b) { return !b.alive; })) { clearInterval(ballInterval); showWinDialog('فوز!', ballScore + ' نقطة!', 3, '🏆'); return; }
+            drawBall(ctx, canvas);
+        }
+
+        function drawBall(ctx, canvas) {
+            ctx.fillStyle = '#0a0a1a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            bricks.forEach(function(b) { if (b.alive) { var g = ctx.createLinearGradient(b.x, b.y, b.x, b.y + b.h); g.addColorStop(0, '#a29bfe'); g.addColorStop(1, '#6c5ce7'); ctx.fillStyle = g; ctx.fillRect(b.x, b.y, b.w, b.h); } });
+            ctx.fillStyle = '#48dbfb';
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = '#48dbfb';
+            ctx.beginPath();
+            ctx.arc(ballX, ballY, 7, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            var pg = ctx.createLinearGradient(paddleX, canvas.height - 20, paddleX + 90, canvas.height - 20);
+            pg.addColorStop(0, '#ff6b6b');
+            pg.addColorStop(1, '#fd79a8');
+            ctx.fillStyle = pg;
+            ctx.fillRect(paddleX, canvas.height - 20, 90, 10);
+        }
+
+        // ============ 11. فلابي ============
+        var flappyBird, flappyPipes, flappyScore, flappyInterval, flappyGravity, flappyActive;
+        function startFlappyGame() {
+            var canvas = document.getElementById('flappyCanvas');
+            canvas.width = Math.min(360, window.innerWidth - 30);
+            canvas.height = 500;
+            var ctx = canvas.getContext('2d');
+            flappyBird = {x: 80, y: canvas.height / 2, radius: 15, vy: 0};
+            flappyPipes = [];
+            flappyScore = 0;
+            flappyGravity = 0.4;
+            flappyActive = true;
+            document.getElementById('flappyScore').textContent = '0';
+            if (flappyInterval) clearInterval(flappyInterval);
+            for (var i = 0; i < 3; i++) flappyPipes.push(generatePipe(canvas, i * 220 + canvas.width));
+            canvas.onclick = canvas.ontouchend = function() { if (flappyActive) flappyBird.vy = -7; };
+            flappyInterval = setInterval(function() {
+                if (!flappyActive) return;
+                flappyBird.vy += flappyGravity;
+                flappyBird.y += flappyBird.vy;
+                if (flappyBird.y < 0 || flappyBird.y > canvas.height - flappyBird.radius) { flappyActive = false; clearInterval(flappyInterval); showWinDialog('اصطدمت!', 'النتيجة: ' + flappyScore, flappyScore > 10 ? 3 : flappyScore > 4 ? 2 : 1, '🐦'); }
+                flappyPipes.forEach(function(p) { p.x -= 2; if (p.x + p.w < 0) { flappyPipes.shift(); flappyPipes.push(generatePipe(canvas, canvas.width)); flappyScore++; document.getElementById('flappyScore').textContent = flappyScore; } if (flappyBird.x + flappyBird.radius > p.x && flappyBird.x - flappyBird.radius < p.x + p.w && (flappyBird.y - flappyBird.radius < p.top || flappyBird.y + flappyBird.radius > p.bottom)) { flappyActive = false; clearInterval(flappyInterval); showWinDialog('اصطدمت!', 'النتيجة: ' + flappyScore, flappyScore > 10 ? 3 : flappyScore > 4 ? 2 : 1, '🐦'); } });
+                drawFlappy(ctx, canvas);
+            }, 20);
+        }
+
+        function generatePipe(canvas, startX) {
+            var gap = 130, minTop = 50, maxTop = canvas.height - gap - 50, top = Math.random() * (maxTop - minTop) + minTop;
+            return {x: startX, top: top, bottom: top + gap, w: 55};
+        }
+
+        function drawFlappy(ctx, canvas) {
+            ctx.fillStyle = '#0a0a1a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#feca57';
+            ctx.shadowBlur = 12;
+            ctx.shadowColor = '#feca57';
+            ctx.beginPath();
+            ctx.arc(flappyBird.x, flappyBird.y, flappyBird.radius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = '#fff';
+            ctx.beginPath();
+            ctx.arc(flappyBird.x + 5, flappyBird.y - 4, 5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#000';
+            ctx.beginPath();
+            ctx.arc(flappyBird.x + 6, flappyBird.y - 4, 2, 0, Math.PI * 2);
+            ctx.fill();
+            flappyPipes.forEach(function(p) { var g = ctx.createLinearGradient(p.x, 0, p.x + p.w, 0); g.addColorStop(0, '#00b894'); g.addColorStop(1, '#55efc4'); ctx.fillStyle = g; ctx.fillRect(p.x, 0, p.w, p.top); ctx.fillRect(p.x, p.bottom, p.w, canvas.height - p.bottom); });
+            ctx.fillStyle = '#2d3436';
+            ctx.fillRect(0, canvas.height - 5, canvas.width, 5);
+        }
 
         // ============ 12. سرعة الرد ============
-        let reactionState='wait',reactionStart,reactionBest=Infinity;
-        function resetReaction(){reactionState='wait';reactionBest=Infinity;document.getElementById('reactionTime').textContent='--';document.getElementById('reactionBest').textContent='--';const a=document.getElementById('reactionArea');a.className='reaction-area reaction-wait';a.textContent='اضغط للبدء';}
-        function handleReaction(){
-            const a=document.getElementById('reactionArea');
-            if(reactionState==='wait'){reactionState='ready';a.className='reaction-area reaction-ready';a.textContent='انتظر...';const delay=Math.random()*3000+1000;
-                setTimeout(()=>{if(reactionState==='ready'){reactionState='go';a.className='reaction-area reaction-go';a.textContent='اضغط الآن!';reactionStart=Date.now();}},delay);}
-            else if(reactionState==='ready'){reactionState='wait';a.className='reaction-area reaction-wait';a.textContent='مبكر جداً! اضغط للبدء';}
-            else if(reactionState==='go'){const time=Date.now()-reactionStart;document.getElementById('reactionTime').textContent=time;if(time<reactionBest){reactionBest=time;document.getElementById('reactionBest').textContent=time;}reactionState='wait';a.className='reaction-area reaction-wait';a.textContent=`${time} مللي ثانية! اضغط للإعادة`;}}
+        var reactionState = 'wait', reactionStart, reactionBest = Infinity;
+        function resetReaction() {
+            reactionState = 'wait';
+            reactionBest = Infinity;
+            document.getElementById('reactionTime').textContent = '--';
+            document.getElementById('reactionBest').textContent = '--';
+            var a = document.getElementById('reactionArea');
+            a.className = 'reaction-area reaction-wait';
+            a.textContent = 'اضغط للبدء';
+        }
+
+        function handleReaction() {
+            var a = document.getElementById('reactionArea');
+            if (reactionState === 'wait') {
+                reactionState = 'ready';
+                a.className = 'reaction-area reaction-ready';
+                a.textContent = 'انتظر...';
+                var delay = Math.random() * 3000 + 1000;
+                setTimeout(function() { if (reactionState === 'ready') { reactionState = 'go'; a.className = 'reaction-area reaction-go'; a.textContent = 'اضغط الآن!'; reactionStart = Date.now(); } }, delay);
+            } else if (reactionState === 'ready') {
+                reactionState = 'wait';
+                a.className = 'reaction-area reaction-wait';
+                a.textContent = 'مبكر جداً! اضغط للبدء';
+            } else if (reactionState === 'go') {
+                var time = Date.now() - reactionStart;
+                document.getElementById('reactionTime').textContent = time;
+                if (time < reactionBest) { reactionBest = time; document.getElementById('reactionBest').textContent = time; }
+                reactionState = 'wait';
+                a.className = 'reaction-area reaction-wait';
+                a.textContent = time + ' مللي ثانية! اضغط للإعادة';
+            }
+        }
 
         // ============ 13. اضرب الخلد ============
-        let moleScore,moleTimer,moleInterval,moleActiveHole;
-        function startMoleGame(){moleScore=0;moleTimer=30;moleActiveHole=-1;document.getElementById('moleScore').textContent='0';document.getElementById('moleTimer').textContent='30';renderMoleGrid();if(moleInterval)clearInterval(moleInterval);
-            moleInterval=setInterval(()=>{moleTimer--;document.getElementById('moleTimer').textContent=moleTimer;if(moleTimer<=0){clearInterval(moleInterval);moleActiveHole=-1;renderMoleGrid();showWinDialog('انتهى الوقت!',`ضربت ${moleScore} خلد`,moleScore>15?3:moleScore>8?2:1,'🔨');}
-                moleActiveHole=Math.floor(Math.random()*9);renderMoleGrid();},800);}
-        function renderMoleGrid(){const g=document.getElementById('moleGrid');g.innerHTML='';for(let i=0;i<9;i++){const d=document.createElement('div');d.className='mole-hole';if(i===moleActiveHole){d.classList.add('active');d.textContent='🐹';d.onclick=()=>{moleScore++;document.getElementById('moleScore').textContent=moleScore;moleActiveHole=-1;renderMoleGrid();};}else{d.textContent='🕳️';}g.appendChild(d);}}
+        var moleScore, moleTimer, moleInterval, moleActiveHole;
+        function startMoleGame() {
+            moleScore = 0;
+            moleTimer = 30;
+            moleActiveHole = -1;
+            document.getElementById('moleScore').textContent = '0';
+            document.getElementById('moleTimer').textContent = '30';
+            renderMoleGrid();
+            if (moleInterval) clearInterval(moleInterval);
+            moleInterval = setInterval(function() {
+                moleTimer--;
+                document.getElementById('moleTimer').textContent = moleTimer;
+                if (moleTimer <= 0) { clearInterval(moleInterval); moleActiveHole = -1; renderMoleGrid(); showWinDialog('انتهى الوقت!', 'ضربت ' + moleScore + ' خلد', moleScore > 15 ? 3 : moleScore > 8 ? 2 : 1, '🔨'); }
+                moleActiveHole = Math.floor(Math.random() * 9);
+                renderMoleGrid();
+            }, 800);
+        }
+
+        function renderMoleGrid() {
+            var g = document.getElementById('moleGrid');
+            g.innerHTML = '';
+            for (var i = 0; i < 9; i++) {
+                var d = document.createElement('div');
+                d.className = 'mole-hole';
+                if (i === moleActiveHole) { d.classList.add('active'); d.textContent = '🐹'; d.onclick = function() { moleScore++; document.getElementById('moleScore').textContent = moleScore; moleActiveHole = -1; renderMoleGrid(); }; }
+                else { d.textContent = '🕳️'; }
+                g.appendChild(d);
+            }
+        }
 
         // ============ 14. النرد ============
-        let dicePlayerScore,diceOppScore,diceRounds,diceTotal=5;
-        function resetDiceGame(){dicePlayerScore=0;diceOppScore=0;diceRounds=0;document.getElementById('playerScore').textContent='0';document.getElementById('opponentScore').textContent='0';document.getElementById('diceRounds').textContent='0';document.getElementById('diceResult').textContent='';document.getElementById('playerDice').textContent='🎲';document.getElementById('opponentDice').textContent='🎲';document.getElementById('rollBtn').disabled=false;}
-        function rollDice(){const de=['⚀','⚁','⚂','⚃','⚄','⚅'];const pr=Math.floor(Math.random()*6)+1,or_=Math.floor(Math.random()*6)+1;
-            document.getElementById('playerDice').textContent=de[pr-1];document.getElementById('opponentDice').textContent=de[or_-1];diceRounds++;document.getElementById('diceRounds').textContent=diceRounds;
-            let t='';if(pr>or_){dicePlayerScore++;t='👤 فزت!';}else if(or_>pr){diceOppScore++;t='🤖 الخصم فاز!';}else{t='🤝 تعادل!';}
-            document.getElementById('playerScore').textContent=dicePlayerScore;document.getElementById('opponentScore').textContent=diceOppScore;document.getElementById('diceResult').textContent=t;
-            if(diceRounds>=diceTotal){document.getElementById('rollBtn').disabled=true;setTimeout(()=>{if(dicePlayerScore>diceOppScore)showWinDialog('البطل!',`${dicePlayerScore}-${diceOppScore}`,3,'🏆');else if(diceOppScore>dicePlayerScore)showWinDialog('حظ أوفر',`${dicePlayerScore}-${diceOppScore}`,1,'😢');else showWinDialog('تعادل!',`${dicePlayerScore}-${diceOppScore}`,2,'🤝');},500);}}
+        var dicePlayerScore, diceOppScore, diceRounds, diceTotal = 5;
+        function resetDiceGame() {
+            dicePlayerScore = 0;
+            diceOppScore = 0;
+            diceRounds = 0;
+            document.getElementById('playerScore').textContent = '0';
+            document.getElementById('opponentScore').textContent = '0';
+            document.getElementById('diceRounds').textContent = '0';
+            document.getElementById('diceResult').textContent = '';
+            document.getElementById('playerDice').textContent = '🎲';
+            document.getElementById('opponentDice').textContent = '🎲';
+            document.getElementById('rollBtn').disabled = false;
+        }
+
+        function rollDice() {
+            var de = ['⚀','⚁','⚂','⚃','⚄','⚅'];
+            var pr = Math.floor(Math.random() * 6) + 1, or_ = Math.floor(Math.random() * 6) + 1;
+            document.getElementById('playerDice').textContent = de[pr - 1];
+            document.getElementById('opponentDice').textContent = de[or_ - 1];
+            diceRounds++;
+            document.getElementById('diceRounds').textContent = diceRounds;
+            var t = '';
+            if (pr > or_) { dicePlayerScore++; t = '👤 فزت!'; }
+            else if (or_ > pr) { diceOppScore++; t = '🤖 الخصم فاز!'; }
+            else { t = '🤝 تعادل!'; }
+            document.getElementById('playerScore').textContent = dicePlayerScore;
+            document.getElementById('opponentScore').textContent = diceOppScore;
+            document.getElementById('diceResult').textContent = t;
+            if (diceRounds >= diceTotal) { document.getElementById('rollBtn').disabled = true; setTimeout(function() { if (dicePlayerScore > diceOppScore) showWinDialog('البطل!', dicePlayerScore + '-' + diceOppScore, 3, '🏆'); else if (diceOppScore > dicePlayerScore) showWinDialog('حظ أوفر', dicePlayerScore + '-' + diceOppScore, 1, '😢'); else showWinDialog('تعادل!', dicePlayerScore + '-' + diceOppScore, 2, '🤝'); }, 500); }
+        }
 
         // ============ 15. تحطيم الجليد ============
-        let iceBlocks,iceScore;
-        function startIceGame(){const canvas=document.getElementById('iceCanvas');canvas.width=Math.min(360,window.innerWidth-30);canvas.height=450;const ctx=canvas.getContext('2d');iceScore=0;document.getElementById('iceScore').textContent='0';
-            iceBlocks=[];const cols=5,rows=8,bw=canvas.width/cols-6,bh=45;for(let r=0;r<rows;r++)for(let c=0;c<cols;c++)iceBlocks.push({x:c*(bw+6)+3,y:r*(bh+6)+10,w:bw,h:bh,hp:Math.floor(Math.random()*3)+1,color:['#48dbfb','#a29bfe','#feca57'][Math.floor(Math.random()*3)]});
-            canvas.onclick=canvas.ontouchend=function(e){const rect=canvas.getBoundingClientRect();const mx=(e.touches?e.changedTouches[0].clientX:e.clientX)-rect.left,my=(e.touches?e.changedTouches[0].clientY:e.clientY)-rect.top;
-                iceBlocks.forEach(b=>{if(b.hp>0&&mx>b.x&&mx<b.x+b.w&&my>b.y&&my<b.y+b.h){b.hp--;if(b.hp<=0){iceScore+=5;document.getElementById('iceScore').textContent=iceScore;}}});drawIce(ctx,canvas);if(iceBlocks.every(b=>b.hp<=0))setTimeout(()=>showWinDialog('رائع!','حطمت كل الجليد!',3,'🧊'),300);};drawIce(ctx,canvas);}
-        function drawIce(ctx,canvas){ctx.fillStyle='#0a0a1a';ctx.fillRect(0,0,canvas.width,canvas.height);iceBlocks.forEach(b=>{if(b.hp>0){ctx.fillStyle=b.color;ctx.shadowBlur=8;ctx.shadowColor=b.color;ctx.beginPath();ctx.roundRect(b.x,b.y,b.w,b.h,8);ctx.fill();ctx.shadowBlur=0;ctx.fillStyle='#fff';ctx.font='bold 16px sans-serif';ctx.textAlign='center';ctx.fillText(b.hp,b.x+b.w/2,b.y+b.h/2+6);}});}
+        var iceBlocks, iceScore;
+        function startIceGame() {
+            var canvas = document.getElementById('iceCanvas');
+            canvas.width = Math.min(360, window.innerWidth - 30);
+            canvas.height = 450;
+            var ctx = canvas.getContext('2d');
+            iceScore = 0;
+            document.getElementById('iceScore').textContent = '0';
+            iceBlocks = [];
+            var cols = 5, rows = 8, bw = canvas.width / cols - 6, bh = 45;
+            for (var r = 0; r < rows; r++) for (var c = 0; c < cols; c++) iceBlocks.push({x: c * (bw + 6) + 3, y: r * (bh + 6) + 10, w: bw, h: bh, hp: Math.floor(Math.random() * 3) + 1, color: ['#48dbfb','#a29bfe','#feca57'][Math.floor(Math.random() * 3)]});
+            canvas.onclick = canvas.ontouchend = function(e) { var rect = canvas.getBoundingClientRect(); var mx = (e.touches ? e.changedTouches[0].clientX : e.clientX) - rect.left, my = (e.touches ? e.changedTouches[0].clientY : e.clientY) - rect.top; iceBlocks.forEach(function(b) { if (b.hp > 0 && mx > b.x && mx < b.x + b.w && my > b.y && my < b.y + b.h) { b.hp--; if (b.hp <= 0) { iceScore += 5; document.getElementById('iceScore').textContent = iceScore; } } }); drawIce(ctx, canvas); if (iceBlocks.every(function(b) { return b.hp <= 0; })) setTimeout(function() { showWinDialog('رائع!', 'حطمت كل الجليد!', 3, '🧊'); }, 300); };
+            drawIce(ctx, canvas);
+        }
+
+        function drawIce(ctx, canvas) {
+            ctx.fillStyle = '#0a0a1a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            iceBlocks.forEach(function(b) { if (b.hp > 0) { ctx.fillStyle = b.color; ctx.shadowBlur = 8; ctx.shadowColor = b.color; ctx.beginPath(); ctx.roundRect(b.x, b.y, b.w, b.h, 8); ctx.fill(); ctx.shadowBlur = 0; ctx.fillStyle = '#fff'; ctx.font = 'bold 16px sans-serif'; ctx.textAlign = 'center'; ctx.fillText(b.hp, b.x + b.w / 2, b.y + b.h / 2 + 6); } });
+        }
 
         // ============ 16. حجر ورقة مقص ============
-        let rpsPlayerScore,rpsBotScore;
-        function resetRPS(){rpsPlayerScore=0;rpsBotScore=0;document.getElementById('rpsPlayerScore').textContent='0';document.getElementById('rpsBotScore').textContent='0';document.getElementById('rpsPlayerChoice').textContent='❓';document.getElementById('rpsBotChoice').textContent='❓';document.getElementById('rpsResult').textContent='';}
-        function playRPS(player){const choices={rock:'🪨',paper:'📄',scissors:'✂️'};const botKeys=['rock','paper','scissors'];const bot=botKeys[Math.floor(Math.random()*3)];
-            document.getElementById('rpsPlayerChoice').textContent=choices[player];document.getElementById('rpsBotChoice').textContent=choices[bot];
-            if(player===bot){document.getElementById('rpsResult').textContent='🤝 تعادل!';document.getElementById('rpsResult').style.color='#feca57';}
-            else if((player==='rock'&&bot==='scissors')||(player==='paper'&&bot==='rock')||(player==='scissors'&&bot==='paper')){rpsPlayerScore++;document.getElementById('rpsPlayerScore').textContent=rpsPlayerScore;document.getElementById('rpsResult').textContent='👤 فزت!';document.getElementById('rpsResult').style.color='#55efc4';}
-            else{rpsBotScore++;document.getElementById('rpsBotScore').textContent=rpsBotScore;document.getElementById('rpsResult').textContent='🤖 الخصم فاز!';document.getElementById('rpsResult').style.color='#ff6b6b';}}
+        var rpsPlayerScore, rpsBotScore;
+        function resetRPS() {
+            rpsPlayerScore = 0;
+            rpsBotScore = 0;
+            document.getElementById('rpsPlayerScore').textContent = '0';
+            document.getElementById('rpsBotScore').textContent = '0';
+            document.getElementById('rpsPlayerChoice').textContent = '❓';
+            document.getElementById('rpsBotChoice').textContent = '❓';
+            document.getElementById('rpsResult').textContent = '';
+        }
 
-        // ============ بدء التشغيل ============
-        document.addEventListener('DOMContentLoaded', () => {
+        function playRPS(player) {
+            var choices = {rock: '🪨', paper: '📄', scissors: '✂️'};
+            var botKeys = ['rock', 'paper', 'scissors'];
+            var bot = botKeys[Math.floor(Math.random() * 3)];
+            document.getElementById('rpsPlayerChoice').textContent = choices[player];
+            document.getElementById('rpsBotChoice').textContent = choices[bot];
+            if (player === bot) { document.getElementById('rpsResult').textContent = '🤝 تعادل!'; document.getElementById('rpsResult').style.color = '#feca57'; }
+            else if ((player === 'rock' && bot === 'scissors') || (player === 'paper' && bot === 'rock') || (player === 'scissors' && bot === 'paper')) { rpsPlayerScore++; document.getElementById('rpsPlayerScore').textContent = rpsPlayerScore; document.getElementById('rpsResult').textContent = '👤 فزت!'; document.getElementById('rpsResult').style.color = '#55efc4'; }
+            else { rpsBotScore++; document.getElementById('rpsBotScore').textContent = rpsBotScore; document.getElementById('rpsResult').textContent = '🤖 الخصم فاز!'; document.getElementById('rpsResult').style.color = '#ff6b6b'; }
+        }
+
+        // ============ عداد الزوار ============
+        async function updateVisitorCount() {
+            try {
+                var res = await fetch('https://api.countapi.xyz/hit/gamehub-general-fix/visitors');
+                var data = await res.json();
+                document.getElementById('viewCount').textContent = (data.value + 1000).toLocaleString();
+            } catch(e) {
+                document.getElementById('viewCount').textContent = '1,250';
+            }
+        }
+
+        // ============ أحداث لوحة المفاتيح ============
+        document.addEventListener('keydown', function(e) {
+            if (!document.getElementById('2048').classList.contains('hidden')) {
+                var map = {ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down'};
+                if (map[e.key]) { e.preventDefault(); move2048(map[e.key]); }
+            }
+        });
+
+// ============ السايدبار ============
+function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebarOverlay').classList.toggle('active');
+}
+function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('active');
+}
+
+// ============ الثيم ============
+function setTheme(t) {
+    if (t === 'light') {
+        document.body.classList.add('light-theme');
+    } else {
+        document.body.classList.remove('light-theme');
+    }
+    document.querySelectorAll('.theme-dot').forEach(function(d) { d.classList.remove('active'); });
+    var dot = document.querySelector('.theme-dot.' + t);
+    if (dot) dot.classList.add('active');
+    localStorage.setItem('gh_theme', t);
+}
+setTheme(localStorage.getItem('gh_theme') || 'dark');
+
+// ============ زر القائمة ============
+document.getElementById('menuBtn').addEventListener('click', function(e) {
+    e.stopPropagation();
+    toggleSidebar();
+});
+document.getElementById('sidebarOverlay').addEventListener('click', closeSidebar);
+
+
+        // ============ التهيئة ============
+        document.addEventListener('DOMContentLoaded', function() {
+            updateVisitorCount();
             startPuzzleGame();
             start2048();
             startMinesweeper();
@@ -1278,7 +2036,7 @@
         });
 
         // منع السحب على Canvas
-        document.querySelectorAll('canvas').forEach(c => {
+        document.querySelectorAll('canvas').forEach(function(c) {
             c.addEventListener('touchstart', function(e) { e.preventDefault(); });
         });
     </script>
