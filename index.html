@@ -882,6 +882,8 @@
 
         <div class="sidebar-divider"></div>
         <div class="sidebar-title">🌐 مواقعنا الأخرى</div>
+        <a href="https://ahmdhlaq031-design.github.io/Exam-hub/" target="_blank"><span class="sicon">🎓</span> ExamHub</a>
+        <a href="https://ahmdhlaq031-design.github.io/Developer-Hub/" target="_blank"><span class="sicon">🚀</span> Developer Hub</a>
         <a href="https://ahmdhlaq031-design.github.io/Smart-Free-tools-/" target="_blank"><span class="sicon">🛠️</span> الأدوات الذكية</a>
         <a href="https://ahmdhlaq031-design.github.io/Ev_Genaral_zero/" target="_blank"><span class="sicon">⚔️</span> لعبة جنرال</a>
         <a href="https://ahmdhlaq031-design.github.io/Seel/" target="_blank"><span class="sicon">🛒</span> المتجر</a>
@@ -2039,6 +2041,50 @@ document.getElementById('sidebarOverlay').addEventListener('click', closeSidebar
         document.querySelectorAll('canvas').forEach(function(c) {
             c.addEventListener('touchstart', function(e) { e.preventDefault(); });
         });
+        // ============ أحداث لوحة المفاتيح ============
+        document.addEventListener('keydown', function(e) {
+        if (!document.getElementById('2048').classList.contains('hidden')) {
+        var map = {ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down'};
+        if (map[e.key]) { e.preventDefault(); move2048(map[e.key]); }
+        }
+        });
+        
+        // ============ التهيئة ============
+        document.addEventListener('DOMContentLoaded', function() {
+        updateVisitorCount();
+        startPuzzleGame();
+        start2048();
+        startMinesweeper();
+        startSudoku();
+        showGame('snake');
+        });
+        
+        // منع السحب على Canvas
+        document.querySelectorAll('canvas').forEach(function(c) {
+        c.addEventListener('touchstart', function(e) { e.preventDefault(); });
+        });
+        // تأكيد عمل زر القائمة
+        (function() {
+        var menuBtn = document.getElementById('menuBtn');
+        if (menuBtn) {
+        // إزالة المستمعات القديمة
+        var newMenuBtn = menuBtn.cloneNode(true);
+        menuBtn.parentNode.replaceChild(newMenuBtn, menuBtn);
+        
+        // إضافة مستمع جديد
+        newMenuBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        toggleSidebar();
+        });
+        }
+        
+        var overlay = document.getElementById('sidebarOverlay');
+        if (overlay) {
+        var newOverlay = overlay.cloneNode(true);
+        overlay.parentNode.replaceChild(newOverlay, overlay);
+        newOverlay.addEventListener('click', closeSidebar);
+        }
+        })();
     </script>
 </body>
 </html>
